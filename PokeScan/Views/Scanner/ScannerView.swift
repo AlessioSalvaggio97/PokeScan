@@ -17,34 +17,28 @@ public struct ScannerView: View {
             CameraPreviewView(captureSession: cameraManager.captureSession)
                 .ignoresSafeArea()
             
-            // Maschera scura con mirino di puntamento centrale
+            // Maschera scura cinematografica
+            LinearGradient(
+                colors: [
+                    Color.black.opacity(0.65),
+                    Color.clear,
+                    Color.black.opacity(0.75)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            
             VStack {
-                // Header superiore
+                // Header superiore con Dynamic Island Toast
                 topBarView
                 
                 Spacer()
                 
-                // Mirino ottico per centrare la carta
-                cardReticleView
+                // Mirino Ottico Laser Hi-Tech
+                ScannerHUDView(isTargetLocked: recognitionService.currentCard != nil)
                 
                 Spacer()
-                
-                // Notifica toast a comparsa quando una carta viene salvata
-                if showSaveToast {
-                    HStack(spacing: 8) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.green)
-                        Text(toastMessage)
-                            .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(Color.black.opacity(0.8))
-                    .cornerRadius(20)
-                    .transition(.move(edge: .top).combined(with: .opacity))
-                    .padding(.bottom, 8)
-                }
                 
                 // Banner riepilogo carta inquadrata in basso
                 if let card = recognitionService.currentCard {
@@ -63,9 +57,11 @@ public struct ScannerView: View {
                     )
                     .padding(.horizontal, 16)
                     .padding(.bottom, 16)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .bottom).combined(with: .opacity),
+                        removal: .scale.combined(with: .opacity)
+                    ))
                 } else {
-                    // Barra inferiore di stato
                     bottomStatusView
                         .padding(.horizontal, 16)
                         .padding(.bottom, 20)
@@ -84,183 +80,136 @@ public struct ScannerView: View {
         }
         .onReceive(recognitionService.$lastCommittedCardName) { name in
             guard let name = name else { return }
-            withAnimation(.spring()) {
-                toastMessage = "+1 Salvata: \(name)"
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                toastMessage = name
                 showSaveToast = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                withAnimation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+                withAnimation(.easeOut) {
                     showSaveToast = false
                 }
             }
         }
     }
     
-    // MARK: - Sotto-viste
+    // MARK: - Sotto-viste Top Bar & Dynamic Toast
     
     private var topBarView: some View {
-        HStack(spacing: 12) {
-            // Selettore Collezione Corrente
-            Button(action: {
-                showCollectionPicker = true
-            }) {
-                HStack(spacing: 6) {
-                    Image(systemName: "folder.fill")
-                        .foregroundColor(.yellow)
-                    Text(dataManager.activeCollection?.name ?? "Seleziona Collezione")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.white.opacity(0.7))
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color.black.opacity(0.65))
-                .cornerRadius(20)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                )
-            }
-            
-            Spacer()
-            
-            // Torcia
-            Button(action: {
-                cameraManager.toggleTorch()
-            }) {
-                Image(systemName: cameraManager.isTorchOn ? "flashlight.on.fill" : "flashlight.off.fill")
-                    .font(.system(size: 16))
-                    .foregroundColor(cameraManager.isTorchOn ? .yellow : .white)
-                    .padding(10)
-                    .background(Color.black.opacity(0.65))
-                    .clipShape(Circle())
-            }
-            
-            // Pulsante "Termina Scansione"
-            Button(action: {
-                recognitionService.commitCurrentCardIfPresent()
-                cameraManager.stopSession()
-                onFinishScanning?()
-            }) {
-                HStack(spacing: 6) {
-                    Image(systemName: "stop.circle.fill")
-                    Text("Termina")
-                        .font(.system(size: 14, weight: .bold))
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color.red.opacity(0.9))
-                .foregroundColor(.white)
-                .cornerRadius(20)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 10)
-    }
-    
-    private var cardReticleView: some View {
-        VStack(spacing: 12) {
-            ZStack {
-                // Riquadro guida proporzione carta Pokémon (63 x 88 mm ~ rapporto 1 : 1.4)
-                RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(
-                        Color.white.opacity(0.35),
-                        style: StrokeStyle(lineWidth: 2, dash: [8, 6])
-                    )
-                    .frame(width: 250, height: 350)
-                
-                // Angolari evidenziati
-                CornerBrackets(width: 250, height: 350)
-                    .stroke(Color.yellow, lineWidth: 3)
-                    .frame(width: 250, height: 350)
-                
-                // Indicatore mirino striscia inferiore
-                VStack {
-                    Spacer()
-                    HStack {
-                        Image(systemName: "viewfinder")
-                            .foregroundColor(.yellow.opacity(0.8))
-                        Text("Sigla & Numero")
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(.yellow.opacity(0.9))
+        VStack(spacing: 8) {
+            HStack(spacing: 12) {
+                // Selettore Collezione Corrente Glassmorphic
+                Button(action: {
+                    showCollectionPicker = true
+                }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "folder.fill")
+                            .foregroundColor(PokeTheme.neonYellow)
+                        Text(dataManager.activeCollection?.name ?? "Seleziona Collezione")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.white)
+                            .lineLimit(1)
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 11, weight: .black))
+                            .foregroundColor(.white.opacity(0.7))
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(Color.black.opacity(0.5))
-                    .cornerRadius(6)
-                    .padding(.bottom, 12)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 9)
+                    .glassPanel(cornerRadius: 20, borderColor: PokeTheme.neonYellow)
                 }
-                .frame(width: 250, height: 350)
+                
+                Spacer()
+                
+                // Pulsante Torcia
+                Button(action: {
+                    cameraManager.toggleTorch()
+                }) {
+                    Image(systemName: cameraManager.isTorchOn ? "flashlight.on.fill" : "flashlight.off.fill")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(cameraManager.isTorchOn ? PokeTheme.neonYellow : .white)
+                        .padding(10)
+                        .glassPanel(cornerRadius: 20, borderColor: cameraManager.isTorchOn ? PokeTheme.neonYellow : Color.white.opacity(0.2))
+                }
+                
+                // Pulsante "Termina Scansione" con Neon Glow
+                Button(action: {
+                    recognitionService.commitCurrentCardIfPresent()
+                    cameraManager.stopSession()
+                    onFinishScanning?()
+                }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "stop.circle.fill")
+                        Text("Termina")
+                            .font(.system(size: 14, weight: .black))
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 9)
+                    .background(
+                        LinearGradient(
+                            colors: [Color(red: 0.95, green: 0.15, blue: 0.25), Color(red: 0.8, green: 0.05, blue: 0.15)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+                    .neonGlow(color: PokeTheme.neonRed, radius: 8)
+                }
             }
+            .padding(.horizontal, 16)
             
-            Text("Inquadra la carta nel mirino")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.white.opacity(0.8))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
-                .background(Color.black.opacity(0.5))
-                .cornerRadius(12)
+            // Dynamic Toast (Notifica tipo Dynamic Island Apple)
+            if showSaveToast {
+                HStack(spacing: 8) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(PokeTheme.neonYellow)
+                    
+                    Text("+1 Salvata:")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.8))
+                    
+                    Text(toastMessage)
+                        .font(.system(size: 13, weight: .black))
+                        .foregroundColor(PokeTheme.neonGreen)
+                        .lineLimit(1)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .glassPanel(cornerRadius: 22, borderColor: PokeTheme.neonGreen)
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
         }
+        .padding(.top, 10)
     }
     
     private var bottomStatusView: some View {
         HStack {
-            HStack(spacing: 6) {
-                Image(systemName: "sparkles")
-                    .foregroundColor(.yellow)
-                Text("\(dataManager.activeCollection?.totalCards ?? 0) carte salvate")
-                    .font(.system(size: 13, weight: .bold))
+            HStack(spacing: 8) {
+                Image(systemName: "tray.full.fill")
+                    .foregroundColor(PokeTheme.neonCyan)
+                Text("\(dataManager.activeCollection?.totalCards ?? 0) carte")
+                    .font(.system(size: 14, weight: .black, design: .monospaced))
                     .foregroundColor(.white)
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .background(Color.black.opacity(0.6))
-            .cornerRadius(20)
+            .glassPanel(cornerRadius: 16, borderColor: PokeTheme.neonCyan)
             
             Spacer()
             
-            Text("Bulk Mode Attivo")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(.white.opacity(0.7))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.white.opacity(0.15))
-                .cornerRadius(12)
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(PokeTheme.neonGreen)
+                    .frame(width: 8, height: 8)
+                    .neonGlow(color: PokeTheme.neonGreen, radius: 4)
+                
+                Text("BULK SCAN 60 FPS")
+                    .font(.system(size: 11, weight: .black, design: .monospaced))
+                    .foregroundColor(PokeTheme.neonGreen)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .glassPanel(cornerRadius: 16, borderColor: PokeTheme.neonGreen)
         }
-    }
-}
-
-// Angolari decorativi per il mirino
-struct CornerBrackets: Shape {
-    let width: CGFloat
-    let height: CGFloat
-    let length: CGFloat = 24
-    
-    func path(in rect: CGRect) -> Path {
-        var p = Path()
-        // Alto Sinistra
-        p.move(to: CGPoint(x: 0, y: length))
-        p.addLine(to: CGPoint(x: 0, y: 0))
-        p.addLine(to: CGPoint(x: length, y: 0))
-        
-        // Alto Destra
-        p.move(to: CGPoint(x: width - length, y: 0))
-        p.addLine(to: CGPoint(x: width, y: 0))
-        p.addLine(to: CGPoint(x: width, y: length))
-        
-        // Basso Sinistra
-        p.move(to: CGPoint(x: 0, y: height - length))
-        p.addLine(to: CGPoint(x: 0, y: height))
-        p.addLine(to: CGPoint(x: length, y: height))
-        
-        // Basso Destra
-        p.move(to: CGPoint(x: width - length, y: height))
-        p.addLine(to: CGPoint(x: width, y: height))
-        p.addLine(to: CGPoint(x: width, y: height - length))
-        
-        return p
     }
 }

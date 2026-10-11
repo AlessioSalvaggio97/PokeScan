@@ -8,10 +8,10 @@ public struct MainTabView: View {
     
     public var body: some View {
         TabView(selection: $selectedTab) {
-            // Tab 1: Fotocamera Scanner
+            // Tab 1: Fotocamera Scanner Hi-Tech
             ScannerView(onFinishScanning: {
                 withAnimation {
-                    selectedTab = 1 // Passa alla lista collezioni quando si preme "Termina"
+                    selectedTab = 1
                 }
             })
             .tabItem {
@@ -22,7 +22,7 @@ public struct MainTabView: View {
             // Tab 2: Collezioni
             CollectionsListView(onSelectCollectionToScan: {
                 withAnimation {
-                    selectedTab = 0 // Torna allo scanner
+                    selectedTab = 0
                 }
             })
             .tabItem {
@@ -38,6 +38,6 @@ public struct MainTabView: View {
                 }
                 .tag(2)
         }
-        .tint(.blue)
+        .tint(PokeTheme.neonCyan)
     }
 }

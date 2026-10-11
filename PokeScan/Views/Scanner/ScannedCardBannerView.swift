@@ -7,74 +7,93 @@ public struct ScannedCardBannerView: View {
     public let onCommit: () -> Void
     public let onDiscard: () -> Void
     
+    private var glowColor: Color {
+        switch card.variant {
+        case .regular:
+            return PokeTheme.neonCyan
+        case .reverse:
+            return PokeTheme.neonPurple
+        case .foil:
+            return PokeTheme.neonYellow
+        }
+    }
+    
     public var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 12) {
             // Barra di progressione auto-save (3 secondi)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 3)
-                        .fill(Color.white.opacity(0.15))
-                        .frame(height: 4)
+                        .fill(Color.white.opacity(0.12))
+                        .frame(height: 5)
                     
                     RoundedRectangle(cornerRadius: 3)
                         .fill(
                             LinearGradient(
-                                colors: [Color.green, Color.mint],
+                                colors: [PokeTheme.neonCyan, PokeTheme.neonGreen],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
                         )
-                        .frame(width: max(0, geo.size.width * CGFloat(countdown / 3.0)), height: 4)
+                        .frame(width: max(0, geo.size.width * CGFloat(countdown / 3.0)), height: 5)
+                        .neonGlow(color: PokeTheme.neonGreen, radius: 4)
                         .animation(.linear(duration: 0.1), value: countdown)
                 }
             }
-            .frame(height: 4)
-            .padding(.horizontal, 4)
+            .frame(height: 5)
+            .padding(.horizontal, 2)
             
             HStack(alignment: .top, spacing: 14) {
-                // Miniatura Carta
+                // Miniatura Carta con Bordo e Ombra Olografica
                 ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.black.opacity(0.4))
-                        .frame(width: 58, height: 80)
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(PokeTheme.bgCard)
+                        .frame(width: 62, height: 86)
                     
                     if let thumbData = card.thumbnailData, let uiImage = UIImage(data: thumbData) {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 58, height: 80)
-                            .cornerRadius(8)
-                            .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
+                            .frame(width: 62, height: 86)
+                            .cornerRadius(10)
                     } else if let imgUrl = card.imageURL, let url = URL(string: "\(imgUrl)/low.webp") {
                         AsyncImage(url: url) { phase in
                             switch phase {
                             case .success(let image):
                                 image.resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 58, height: 80)
-                                    .cornerRadius(8)
+                                    .frame(width: 62, height: 86)
+                                    .cornerRadius(10)
                             default:
-                                ProgressView()
-                                    .tint(.white)
+                                ProgressView().tint(.white)
                             }
                         }
                     } else {
                         VStack(spacing: 2) {
                             Image(systemName: "photo.fill")
-                                .font(.system(size: 20))
+                                .font(.system(size: 22))
                                 .foregroundColor(.white.opacity(0.6))
                             Text("TCG")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundColor(.white.opacity(0.5))
                         }
                     }
+                    
+                    // Bordo illuminato della miniatura
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(
+                            card.variant == .foil ? PokeTheme.rainbowFoil : LinearGradient(colors: [glowColor, Color.clear], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            lineWidth: 2
+                        )
+                        .frame(width: 62, height: 86)
                 }
+                .shadow(color: glowColor.opacity(0.5), radius: 8, x: 0, y: 3)
                 
                 // Dettagli Carta
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 5) {
                     HStack {
                         Text(card.name)
-                            .font(.system(size: 18, weight: .bold))
+                            .font(.system(size: 19, weight: .black))
                             .foregroundColor(.white)
                             .lineLimit(1)
                         
@@ -83,8 +102,8 @@ public struct ScannedCardBannerView: View {
                         // Pulsante Scarta (X)
                         Button(action: onDiscard) {
                             Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white.opacity(0.6))
+                                .font(.system(size: 22))
+                                .foregroundColor(.white.opacity(0.5))
                         }
                     }
                     
@@ -98,8 +117,8 @@ public struct ScannedCardBannerView: View {
                         }
                         
                         Text(card.setName)
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(.white.opacity(0.9))
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(Color.white.opacity(0.85))
                             .lineLimit(1)
                     }
                     
@@ -107,81 +126,81 @@ public struct ScannedCardBannerView: View {
                     HStack(spacing: 6) {
                         Text(card.formattedNumber)
                             .font(.system(size: 12, weight: .bold, design: .monospaced))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.white.opacity(0.18))
-                            .cornerRadius(5)
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 3)
+                            .background(Color.white.opacity(0.15))
+                            .cornerRadius(6)
                             .foregroundColor(.white)
                         
                         Text(card.rarity)
-                            .font(.system(size: 11, weight: .medium))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.blue.opacity(0.35))
-                            .cornerRadius(5)
-                            .foregroundColor(.white.opacity(0.9))
+                            .font(.system(size: 11, weight: .bold))
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 3)
+                            .background(PokeTheme.neonCyan.opacity(0.25))
+                            .foregroundColor(PokeTheme.neonCyan)
+                            .cornerRadius(6)
                         
                         Text(card.language)
-                            .font(.system(size: 10, weight: .bold))
-                            .padding(.horizontal, 5)
-                            .padding(.vertical, 2)
-                            .background(Color.purple.opacity(0.35))
-                            .cornerRadius(5)
-                            .foregroundColor(.white.opacity(0.9))
+                            .font(.system(size: 10, weight: .black))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(PokeTheme.neonPurple.opacity(0.3))
+                            .foregroundColor(PokeTheme.neonPurple)
+                            .cornerRadius(6)
                     }
                 }
             }
             
             Divider()
-                .background(Color.white.opacity(0.2))
-                .padding(.vertical, 2)
+                .background(Color.white.opacity(0.15))
             
             // Selettore Rapido Variante (Regular / Reverse / Foil)
             HStack(spacing: 8) {
                 ForEach(CardVariant.allCases) { variant in
-                    Button(action: {
+                    Button {
                         onSelectVariant(variant)
-                    }) {
-                        HStack(spacing: 4) {
+                    } label: {
+                        HStack(spacing: 5) {
                             if card.variant == variant {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 12, weight: .bold))
                             }
                             Text(variant.rawValue)
-                                .font(.system(size: 13, weight: card.variant == variant ? .bold : .medium))
+                                .font(.system(size: 13, weight: .black))
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
+                        .padding(.vertical, 9)
                         .background(
                             card.variant == variant
                                 ? variant.badgeColor
-                                : Color.white.opacity(0.12)
+                                : Color.white.opacity(0.08)
                         )
                         .foregroundColor(.white)
-                        .cornerRadius(8)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(
+                                    card.variant == variant ? Color.white.opacity(0.4) : Color.clear,
+                                    lineWidth: 1
+                                )
+                        )
+                        .neonGlow(color: card.variant == variant ? variant.badgeColor : Color.clear, radius: 4)
                     }
                 }
                 
-                // Pulsante Conferma / Salva Subito
+                // Pulsante Salva Subito
                 Button(action: onCommit) {
                     Image(systemName: "arrow.down.circle.fill")
-                        .font(.system(size: 20))
+                        .font(.system(size: 24))
                         .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.green)
+                        .padding(7)
+                        .background(PokeTheme.neonGreen)
                         .clipShape(Circle())
+                        .neonGlow(color: PokeTheme.neonGreen, radius: 6)
                 }
             }
         }
-        .padding(14)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(red: 0.11, green: 0.13, blue: 0.18).opacity(0.96))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                )
-                .shadow(color: .black.opacity(0.5), radius: 16, x: 0, y: 8)
-        )
+        .padding(16)
+        .glassPanel(cornerRadius: 20, borderColor: glowColor)
     }
 }

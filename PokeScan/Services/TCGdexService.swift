@@ -28,7 +28,6 @@ public class TCGdexService {
         let cleanLocalId = localId.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanSetId = setId.trimmingCharacters(in: .whitespacesAndNewlines)
         let lang = language.lowercased()
-        let cacheKey = "\(lang)_\(cleanSetId)_\(cleanLocalId)"
         
         var cardName = "Carta \(cleanLocalId)"
         var cardRarity = "Comune"
