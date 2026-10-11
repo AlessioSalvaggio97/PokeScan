@@ -1,0 +1,33 @@
+name: PokeScan
+options:
+  bundleIdPrefix: com.alessio
+  deploymentTarget:
+    iOS: 17.0
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    INFOPLIST_KEY_NSCameraUsageDescription: "PokéScan necessita della fotocamera per scansionare e riconoscere le carte Pokémon."
+    INFOPLIST_KEY_CFBundleDisplayName: "PokéScan"
+
+targets:
+  PokeScan:
+    type: application
+    platform: iOS
+    sources:
+      - path: PokeScan
+      - path: sets_catalog.json
+      - path: symbols
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.alessio.PokeScan
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSCameraUsageDescription: "PokéScan necessita della fotocamera per scansionare e riconoscere le carte Pokémon."
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
+        INFOPLIST_KEY_UIRequiresFullScreen: YES

@@ -1,0 +1,2748 @@
+{
+  "sets": {
+    "base1": {
+      "id": "base1",
+      "name_it": "Set Base",
+      "name_en": "Base Set",
+      "official_count": 102,
+      "total_count": 102,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "base2": {
+      "id": "base2",
+      "name_it": "Jungle",
+      "name_en": "Jungle",
+      "official_count": 64,
+      "total_count": 64,
+      "symbol_url": "https://assets.tcgdex.net/en/base/base2/symbol.png",
+      "local_symbol": "symbols/base2.png",
+      "logo_url": null
+    },
+    "basep": {
+      "id": "basep",
+      "name_it": "Wizards Black Star Promos",
+      "name_en": "Wizards Black Star Promos",
+      "official_count": 53,
+      "total_count": 53,
+      "symbol_url": "https://assets.tcgdex.net/en/base/basep/symbol.png",
+      "local_symbol": "symbols/basep.png",
+      "logo_url": null
+    },
+    "wp": {
+      "id": "wp",
+      "name_it": "Carte Promo Wizards",
+      "name_en": "W Promotional",
+      "official_count": 7,
+      "total_count": 7,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "base3": {
+      "id": "base3",
+      "name_it": "Fossil",
+      "name_en": "Fossil",
+      "official_count": 62,
+      "total_count": 62,
+      "symbol_url": "https://assets.tcgdex.net/en/base/base3/symbol.png",
+      "local_symbol": "symbols/base3.png",
+      "logo_url": null
+    },
+    "base5": {
+      "id": "base5",
+      "name_it": "Team Rocket",
+      "name_en": "Team Rocket",
+      "official_count": 82,
+      "total_count": 82,
+      "symbol_url": "https://assets.tcgdex.net/en/base/base5/symbol.png",
+      "local_symbol": "symbols/base5.png",
+      "logo_url": null
+    },
+    "neo1": {
+      "id": "neo1",
+      "name_it": "Neo Genesis",
+      "name_en": "Neo Genesis",
+      "official_count": 111,
+      "total_count": 111,
+      "symbol_url": "https://assets.tcgdex.net/en/neo/neo1/symbol.png",
+      "local_symbol": "symbols/neo1.png",
+      "logo_url": null
+    },
+    "neo2": {
+      "id": "neo2",
+      "name_it": "Neo Discovery",
+      "name_en": "Neo Discovery",
+      "official_count": 75,
+      "total_count": 75,
+      "symbol_url": "https://assets.tcgdex.net/en/neo/neo2/symbol.png",
+      "local_symbol": "symbols/neo2.png",
+      "logo_url": null
+    },
+    "neo3": {
+      "id": "neo3",
+      "name_it": "Neo Revelation",
+      "name_en": "Neo Revelation",
+      "official_count": 64,
+      "total_count": 64,
+      "symbol_url": "https://assets.tcgdex.net/en/neo/neo3/symbol.png",
+      "local_symbol": "symbols/neo3.png",
+      "logo_url": null
+    },
+    "neo4": {
+      "id": "neo4",
+      "name_it": "Neo Destiny",
+      "name_en": "Neo Destiny",
+      "official_count": 105,
+      "total_count": 105,
+      "symbol_url": "https://assets.tcgdex.net/en/neo/neo4/symbol.png",
+      "local_symbol": "symbols/neo4.png",
+      "logo_url": null
+    },
+    "ecard1": {
+      "id": "ecard1",
+      "name_it": "Expedition Set Base",
+      "name_en": "Expedition Base Set",
+      "official_count": 165,
+      "total_count": 165,
+      "symbol_url": "https://assets.tcgdex.net/en/ecard/ecard1/symbol.png",
+      "local_symbol": "symbols/ecard1.png",
+      "logo_url": null
+    },
+    "ecard2": {
+      "id": "ecard2",
+      "name_it": "Aquapolis",
+      "name_en": "Aquapolis",
+      "official_count": 147,
+      "total_count": 147,
+      "symbol_url": "https://assets.tcgdex.net/en/ecard/ecard2/symbol.png",
+      "local_symbol": "symbols/ecard2.png",
+      "logo_url": null
+    },
+    "ecard3": {
+      "id": "ecard3",
+      "name_it": "Skyridge",
+      "name_en": "Skyridge",
+      "official_count": 144,
+      "total_count": 144,
+      "symbol_url": "https://assets.tcgdex.net/en/ecard/ecard3/symbol.png",
+      "local_symbol": "symbols/ecard3.png",
+      "logo_url": null
+    },
+    "ex1": {
+      "id": "ex1",
+      "name_it": "EX Rubino & Zaffiro",
+      "name_en": "Ruby & Sapphire",
+      "official_count": 109,
+      "total_count": 109,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex1/symbol.png",
+      "local_symbol": "symbols/ex1.png",
+      "logo_url": null
+    },
+    "ex2": {
+      "id": "ex2",
+      "name_it": "EX Tempesta di Sabbia",
+      "name_en": "Sandstorm",
+      "official_count": 100,
+      "total_count": 100,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex2/symbol.png",
+      "local_symbol": "symbols/ex2.png",
+      "logo_url": null
+    },
+    "np": {
+      "id": "np",
+      "name_it": "Nintendo Black Star Promos",
+      "name_en": "Nintendo Black Star Promos",
+      "official_count": 40,
+      "total_count": 40,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/np/symbol.png",
+      "local_symbol": "symbols/np.png",
+      "logo_url": null
+    },
+    "ex3": {
+      "id": "ex3",
+      "name_it": "EX Drago",
+      "name_en": "Dragon",
+      "official_count": 97,
+      "total_count": 97,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex3/symbol.png",
+      "local_symbol": "symbols/ex3.png",
+      "logo_url": null
+    },
+    "ex4": {
+      "id": "ex4",
+      "name_it": "EX Team Magma vs Team Idro",
+      "name_en": "Team Magma vs Team Aqua",
+      "official_count": 95,
+      "total_count": 95,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex4/symbol.png",
+      "local_symbol": "symbols/ex4.png",
+      "logo_url": null
+    },
+    "ex5": {
+      "id": "ex5",
+      "name_it": "EX Leggende Nascoste",
+      "name_en": "Hidden Legends",
+      "official_count": 101,
+      "total_count": 101,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex5/symbol.png",
+      "local_symbol": "symbols/ex5.png",
+      "logo_url": null
+    },
+    "tk-ex-latia": {
+      "id": "tk-ex-latia",
+      "name_it": "EX trainer Kit (Latias)",
+      "name_en": "EX trainer Kit (Latias)",
+      "official_count": 10,
+      "total_count": 10,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-ex-latia/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "tk-ex-latio": {
+      "id": "tk-ex-latio",
+      "name_it": "EX trainer Kit (Latios)",
+      "name_en": "EX trainer Kit (Latios)",
+      "official_count": 10,
+      "total_count": 10,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-ex-latio/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "ex6": {
+      "id": "ex6",
+      "name_it": "EX RossoFuoco e VerdeFoglia",
+      "name_en": "FireRed & LeafGreen",
+      "official_count": 112,
+      "total_count": 112,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex6/symbol.png",
+      "local_symbol": "symbols/ex6.png",
+      "logo_url": null
+    },
+    "pop1": {
+      "id": "pop1",
+      "name_it": "POP Serie 1",
+      "name_en": "POP Series 1",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop1/symbol.png",
+      "local_symbol": "symbols/pop1.png",
+      "logo_url": null
+    },
+    "ex8": {
+      "id": "ex8",
+      "name_it": "EX Deoxys",
+      "name_en": "Deoxys",
+      "official_count": 107,
+      "total_count": 107,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex8/symbol.png",
+      "local_symbol": "symbols/ex8.png",
+      "logo_url": null
+    },
+    "ex9": {
+      "id": "ex9",
+      "name_it": "EX Smeraldo",
+      "name_en": "Emerald",
+      "official_count": 106,
+      "total_count": 106,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex9/symbol.png",
+      "local_symbol": "symbols/ex9.png",
+      "logo_url": null
+    },
+    "pop2": {
+      "id": "pop2",
+      "name_it": "POP Serie 2",
+      "name_en": "POP Series 2",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop2/symbol.png",
+      "local_symbol": "symbols/pop2.png",
+      "logo_url": null
+    },
+    "exu": {
+      "id": "exu",
+      "name_it": "EX Forze Segrete Unown",
+      "name_en": "Unseen Forces Unown Collection",
+      "official_count": 28,
+      "total_count": 28,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "ex10": {
+      "id": "ex10",
+      "name_it": "EX Forze Segrete",
+      "name_en": "Unseen Forces",
+      "official_count": 115,
+      "total_count": 115,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex10/symbol.png",
+      "local_symbol": "symbols/ex10.png",
+      "logo_url": null
+    },
+    "ex11": {
+      "id": "ex11",
+      "name_it": "EX Specie Delta",
+      "name_en": "Delta Species",
+      "official_count": 113,
+      "total_count": 113,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex11/symbol.png",
+      "local_symbol": "symbols/ex11.png",
+      "logo_url": null
+    },
+    "ex12": {
+      "id": "ex12",
+      "name_it": "EX La Leggenda di Mew",
+      "name_en": "Legend Maker",
+      "official_count": 92,
+      "total_count": 92,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex12/symbol.png",
+      "local_symbol": "symbols/ex12.png",
+      "logo_url": null
+    },
+    "tk-ex-p": {
+      "id": "tk-ex-p",
+      "name_it": "EX trainer Kit (Plusle)",
+      "name_en": "EX trainer Kit 2 (Plusle)",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-ex-p/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "tk-ex-m": {
+      "id": "tk-ex-m",
+      "name_it": "EX trainer Kit (Ninun)",
+      "name_en": "EX trainer Kit 2 (Minun)",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "pop3": {
+      "id": "pop3",
+      "name_it": "POP Serie 3",
+      "name_en": "POP Series 3",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop3/symbol.png",
+      "local_symbol": "symbols/pop3.png",
+      "logo_url": null
+    },
+    "ex13": {
+      "id": "ex13",
+      "name_it": "EX Fantasmi di Holon",
+      "name_en": "Holon Phantoms",
+      "official_count": 110,
+      "total_count": 110,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex13/symbol.png",
+      "local_symbol": "symbols/ex13.png",
+      "logo_url": null
+    },
+    "pop4": {
+      "id": "pop4",
+      "name_it": "POP Serie 4",
+      "name_en": "POP Series 4",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop4/symbol.png",
+      "local_symbol": "symbols/pop4.png",
+      "logo_url": null
+    },
+    "ex14": {
+      "id": "ex14",
+      "name_it": "EX Guardiani dei Cristalli",
+      "name_en": "Crystal Guardians",
+      "official_count": 100,
+      "total_count": 100,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex14/symbol.png",
+      "local_symbol": "symbols/ex14.png",
+      "logo_url": null
+    },
+    "ex15": {
+      "id": "ex15",
+      "name_it": "EX L'Isola dei Draghi",
+      "name_en": "Dragon Frontiers",
+      "official_count": 101,
+      "total_count": 101,
+      "symbol_url": "https://assets.tcgdex.net/en/ex/ex15/symbol.png",
+      "local_symbol": "symbols/ex15.png",
+      "logo_url": null
+    },
+    "pop5": {
+      "id": "pop5",
+      "name_it": "POP Serie 5",
+      "name_en": "POP Series 5",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop5/symbol.png",
+      "local_symbol": "symbols/pop5.png",
+      "logo_url": null
+    },
+    "dpp": {
+      "id": "dpp",
+      "name_it": "DP Black Star Promos",
+      "name_en": "DP Black Star Promos",
+      "official_count": 56,
+      "total_count": 56,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dpp/symbol.png",
+      "local_symbol": "symbols/dpp.png",
+      "logo_url": null
+    },
+    "dp1": {
+      "id": "dp1",
+      "name_it": "Diamante & Perla",
+      "name_en": "Diamond & Pearl",
+      "official_count": 130,
+      "total_count": 130,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp1/symbol.png",
+      "local_symbol": "symbols/dp1.png",
+      "logo_url": null
+    },
+    "dp2": {
+      "id": "dp2",
+      "name_it": "Tesori Misteriosi",
+      "name_en": "Mysterious Treasures",
+      "official_count": 123,
+      "total_count": 123,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp2/symbol.png",
+      "local_symbol": "symbols/dp2.png",
+      "logo_url": null
+    },
+    "tk-dp-l": {
+      "id": "tk-dp-l",
+      "name_it": "Diamond & Pearl trainer Kit (Lucario)",
+      "name_en": "DP trainer Kit (Lucario)",
+      "official_count": 11,
+      "total_count": 11,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-dp-l/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "tk-dp-m": {
+      "id": "tk-dp-m",
+      "name_it": "Diamond & Pearl trainer Kit (Manaphy)",
+      "name_en": "DP trainer Kit (Manaphy)",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-dp-m/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "dp3": {
+      "id": "dp3",
+      "name_it": "Prodigi Segreti",
+      "name_en": "Secret Wonders",
+      "official_count": 132,
+      "total_count": 132,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp3/symbol.png",
+      "local_symbol": "symbols/dp3.png",
+      "logo_url": null
+    },
+    "dp4": {
+      "id": "dp4",
+      "name_it": "Incontri Leggendari",
+      "name_en": "Great Encounters",
+      "official_count": 106,
+      "total_count": 106,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp4/symbol.png",
+      "local_symbol": "symbols/dp4.png",
+      "logo_url": null
+    },
+    "pop7": {
+      "id": "pop7",
+      "name_it": "POP Serie 7",
+      "name_en": "POP Series 7",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop7/symbol.png",
+      "local_symbol": "symbols/pop7.png",
+      "logo_url": null
+    },
+    "dp5": {
+      "id": "dp5",
+      "name_it": "Alba Suprema",
+      "name_en": "Majestic Dawn",
+      "official_count": 100,
+      "total_count": 100,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp5/symbol.png",
+      "local_symbol": "symbols/dp5.png",
+      "logo_url": null
+    },
+    "dp6": {
+      "id": "dp6",
+      "name_it": "Il Risveglio dei Miti",
+      "name_en": "Legends Awakened",
+      "official_count": 146,
+      "total_count": 146,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp6/symbol.png",
+      "local_symbol": "symbols/dp6.png",
+      "logo_url": null
+    },
+    "dp7": {
+      "id": "dp7",
+      "name_it": "Fronte di Tempesta",
+      "name_en": "Stormfront",
+      "official_count": 100,
+      "total_count": 100,
+      "symbol_url": "https://assets.tcgdex.net/en/dp/dp7/symbol.png",
+      "local_symbol": "symbols/dp7.png",
+      "logo_url": null
+    },
+    "pl1": {
+      "id": "pl1",
+      "name_it": "Platino",
+      "name_en": "Platinum",
+      "official_count": 127,
+      "total_count": 127,
+      "symbol_url": "https://assets.tcgdex.net/en/pl/pl1/symbol.png",
+      "local_symbol": "symbols/pl1.png",
+      "logo_url": null
+    },
+    "pop9": {
+      "id": "pop9",
+      "name_it": "POP Serie 9",
+      "name_en": "POP Series 9",
+      "official_count": 17,
+      "total_count": 17,
+      "symbol_url": "https://assets.tcgdex.net/en/pop/pop9/symbol.png",
+      "local_symbol": "symbols/pop9.png",
+      "logo_url": null
+    },
+    "pl2": {
+      "id": "pl2",
+      "name_it": "L'Ascesa dei Rivali",
+      "name_en": "Rising Rivals",
+      "official_count": 111,
+      "total_count": 111,
+      "symbol_url": "https://assets.tcgdex.net/en/pl/pl2/symbol.png",
+      "local_symbol": "symbols/pl2.png",
+      "logo_url": null
+    },
+    "pl4": {
+      "id": "pl4",
+      "name_it": "Arceus",
+      "name_en": "Arceus",
+      "official_count": 99,
+      "total_count": 99,
+      "symbol_url": "https://assets.tcgdex.net/en/pl/pl4/symbol.png",
+      "local_symbol": "symbols/pl4.png",
+      "logo_url": null
+    },
+    "hgss1": {
+      "id": "hgss1",
+      "name_it": "HeartGold SoulSilver",
+      "name_en": "HeartGold SoulSilver",
+      "official_count": 123,
+      "total_count": 123,
+      "symbol_url": "https://assets.tcgdex.net/en/hgss/hgss1/symbol.png",
+      "local_symbol": "symbols/hgss1.png",
+      "logo_url": null
+    },
+    "hgssp": {
+      "id": "hgssp",
+      "name_it": "HGSS Promo",
+      "name_en": "HGSS Black Star Promos",
+      "official_count": 25,
+      "total_count": 25,
+      "symbol_url": "https://assets.tcgdex.net/en/hgss/hgssp/symbol.png",
+      "local_symbol": "symbols/hgssp.png",
+      "logo_url": null
+    },
+    "tk-hs-r": {
+      "id": "tk-hs-r",
+      "name_it": "HS trainer Kit (Raichu)",
+      "name_en": "HS trainer Kit (Raichu)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-hs-r/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "tk-hs-g": {
+      "id": "tk-hs-g",
+      "name_it": "HS trainer Kit (Gyarados)",
+      "name_en": "HS trainer Kit (Gyarados)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-hs-g/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "hgss2": {
+      "id": "hgss2",
+      "name_it": "Forze Scatenate",
+      "name_en": "Unleashed",
+      "official_count": 95,
+      "total_count": 95,
+      "symbol_url": "https://assets.tcgdex.net/en/hgss/hgss2/symbol.png",
+      "local_symbol": "symbols/hgss2.png",
+      "logo_url": null
+    },
+    "hgss3": {
+      "id": "hgss3",
+      "name_it": "Senza Paura",
+      "name_en": "Undaunted",
+      "official_count": 90,
+      "total_count": 90,
+      "symbol_url": "https://assets.tcgdex.net/en/hgss/hgss3/symbol.png",
+      "local_symbol": "symbols/hgss3.png",
+      "logo_url": null
+    },
+    "hgss4": {
+      "id": "hgss4",
+      "name_it": "Battaglie Trionfali",
+      "name_en": "Triumphant",
+      "official_count": 102,
+      "total_count": 102,
+      "symbol_url": "https://assets.tcgdex.net/en/hgss/hgss4/symbol.png",
+      "local_symbol": "symbols/hgss4.png",
+      "logo_url": null
+    },
+    "col1": {
+      "id": "col1",
+      "name_it": "Richiamo delle Leggende",
+      "name_en": "Call of Legends",
+      "official_count": 95,
+      "total_count": 95,
+      "symbol_url": "https://assets.tcgdex.net/en/col/col1/symbol.png",
+      "local_symbol": "symbols/col1.png",
+      "logo_url": null
+    },
+    "bw1": {
+      "id": "bw1",
+      "name_it": "Nero e Bianco",
+      "name_en": "Black & White",
+      "official_count": 114,
+      "total_count": 115,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw1/symbol.png",
+      "local_symbol": "symbols/bw1.png",
+      "logo_url": null
+    },
+    "bwp": {
+      "id": "bwp",
+      "name_it": "NB Promo",
+      "name_en": "BW Black Star Promos",
+      "official_count": 101,
+      "total_count": 101,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bwp/symbol.png",
+      "local_symbol": "symbols/bwp.png",
+      "logo_url": null
+    },
+    "2011bw": {
+      "id": "2011bw",
+      "name_it": "McDonald's Collection",
+      "name_en": "McDonald's Collection 2011",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "bw2": {
+      "id": "bw2",
+      "name_it": "Nuove Forze",
+      "name_en": "Emerging Powers",
+      "official_count": 98,
+      "total_count": 98,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw2/symbol.png",
+      "local_symbol": "symbols/bw2.png",
+      "logo_url": null
+    },
+    "bw3": {
+      "id": "bw3",
+      "name_it": "Vittorie Regali",
+      "name_en": "Noble Victories",
+      "official_count": 101,
+      "total_count": 102,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw3/symbol.png",
+      "local_symbol": "symbols/bw3.png",
+      "logo_url": null
+    },
+    "bw4": {
+      "id": "bw4",
+      "name_it": "Destini Futuri",
+      "name_en": "Next Destinies",
+      "official_count": 99,
+      "total_count": 103,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw4/symbol.png",
+      "local_symbol": "symbols/bw4.png",
+      "logo_url": null
+    },
+    "bw5": {
+      "id": "bw5",
+      "name_it": "Esploratori delle Tenebre",
+      "name_en": "Dark Explorers",
+      "official_count": 108,
+      "total_count": 111,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw5/symbol.png",
+      "local_symbol": "symbols/bw5.png",
+      "logo_url": null
+    },
+    "2012bw": {
+      "id": "2012bw",
+      "name_it": "McDonald's Collection 2012",
+      "name_en": "McDonald's Collection 2012",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "bw6": {
+      "id": "bw6",
+      "name_it": "Stirpe dei Draghi",
+      "name_en": "Dragons Exalted",
+      "official_count": 124,
+      "total_count": 128,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw6/symbol.png",
+      "local_symbol": "symbols/bw6.png",
+      "logo_url": null
+    },
+    "dv1": {
+      "id": "dv1",
+      "name_it": "Tesoro dei Draghi",
+      "name_en": "Dragon Vault",
+      "official_count": 20,
+      "total_count": 20,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/dv1/symbol.png",
+      "local_symbol": "symbols/dv1.png",
+      "logo_url": null
+    },
+    "bw7": {
+      "id": "bw7",
+      "name_it": "Confini Varcati",
+      "name_en": "Boundaries Crossed",
+      "official_count": 149,
+      "total_count": 153,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw7/symbol.png",
+      "local_symbol": "symbols/bw7.png",
+      "logo_url": null
+    },
+    "bw8": {
+      "id": "bw8",
+      "name_it": "Uragano Plasma",
+      "name_en": "Plasma Storm",
+      "official_count": 135,
+      "total_count": 138,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw8/symbol.png",
+      "local_symbol": "symbols/bw8.png",
+      "logo_url": null
+    },
+    "bw9": {
+      "id": "bw9",
+      "name_it": "Glaciazione Plasma",
+      "name_en": "Plasma Freeze",
+      "official_count": 116,
+      "total_count": 122,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw9/symbol.png",
+      "local_symbol": "symbols/bw9.png",
+      "logo_url": null
+    },
+    "bw10": {
+      "id": "bw10",
+      "name_it": "Esplosione Plasma",
+      "name_en": "Plasma Blast",
+      "official_count": 101,
+      "total_count": 105,
+      "symbol_url": "https://assets.tcgdex.net/en/bw/bw10/symbol.png",
+      "local_symbol": "symbols/bw10.png",
+      "logo_url": null
+    },
+    "xyp": {
+      "id": "xyp",
+      "name_it": "XY Promo",
+      "name_en": "XY Black Star Promos",
+      "official_count": 211,
+      "total_count": 211,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xyp/symbol.png",
+      "local_symbol": "symbols/xyp.png",
+      "logo_url": null
+    },
+    "xy0": {
+      "id": "xy0",
+      "name_it": "Benvenuti a Kalos",
+      "name_en": "Kalos Starter Set",
+      "official_count": 39,
+      "total_count": 39,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy0/symbol.png",
+      "local_symbol": "symbols/xy0.png",
+      "logo_url": null
+    },
+    "xy1": {
+      "id": "xy1",
+      "name_it": "XY",
+      "name_en": "XY",
+      "official_count": 146,
+      "total_count": 146,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy1/symbol.png",
+      "local_symbol": "symbols/xy1.png",
+      "logo_url": null
+    },
+    "xya": {
+      "id": "xya",
+      "name_it": "Carta Alternatica A Gialla",
+      "name_en": "Yellow A Alternate",
+      "official_count": 6,
+      "total_count": 6,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "tk-xy-sy": {
+      "id": "tk-xy-sy",
+      "name_it": "XY trainer Kit (Sylveon)",
+      "name_en": "XY trainer Kit (Sylveon)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-sy/symbol.png",
+      "local_symbol": "symbols/tk-xy-sy.png",
+      "logo_url": null
+    },
+    "tk-xy-n": {
+      "id": "tk-xy-n",
+      "name_it": "XY trainer Kit (Noivern)",
+      "name_en": "XY trainer Kit (Noivern)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-n/symbol.png",
+      "local_symbol": "symbols/tk-xy-n.png",
+      "logo_url": null
+    },
+    "xy2": {
+      "id": "xy2",
+      "name_it": "Fuoco Infernale",
+      "name_en": "Flashfire",
+      "official_count": 106,
+      "total_count": 110,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy2/symbol.png",
+      "local_symbol": "symbols/xy2.png",
+      "logo_url": null
+    },
+    "2014xy": {
+      "id": "2014xy",
+      "name_it": "McDonald's Collection 2014",
+      "name_en": "McDonald's Collection 2014",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "xy3": {
+      "id": "xy3",
+      "name_it": "Colpi Furiosi",
+      "name_en": "Furious Fists",
+      "official_count": 111,
+      "total_count": 114,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy3/symbol.png",
+      "local_symbol": "symbols/xy3.png",
+      "logo_url": null
+    },
+    "tk-xy-b": {
+      "id": "tk-xy-b",
+      "name_it": "XY trainer Kit (Bisharp)",
+      "name_en": "XY trainer Kit (Bisharp)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-b/symbol.png",
+      "local_symbol": "symbols/tk-xy-b.png",
+      "logo_url": null
+    },
+    "tk-xy-w": {
+      "id": "tk-xy-w",
+      "name_it": "XY trainer Kit (Wigglytuff)",
+      "name_en": "XY trainer Kit (Wigglytuff)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-w/symbol.png",
+      "local_symbol": "symbols/tk-xy-w.png",
+      "logo_url": null
+    },
+    "xy4": {
+      "id": "xy4",
+      "name_it": "Forze Spettrali",
+      "name_en": "Phantom Forces",
+      "official_count": 119,
+      "total_count": 124,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy4/symbol.png",
+      "local_symbol": "symbols/xy4.png",
+      "logo_url": null
+    },
+    "xy5": {
+      "id": "xy5",
+      "name_it": "Scontro Primordiale",
+      "name_en": "Primal Clash",
+      "official_count": 160,
+      "total_count": 164,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy5/symbol.png",
+      "local_symbol": "symbols/xy5.png",
+      "logo_url": null
+    },
+    "tk-xy-latia": {
+      "id": "tk-xy-latia",
+      "name_it": "XY trainer Kit (Latias)",
+      "name_en": "XY trainer Kit (Latias)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-latia/symbol.png",
+      "local_symbol": "symbols/tk-xy-latia.png",
+      "logo_url": null
+    },
+    "tk-xy-latio": {
+      "id": "tk-xy-latio",
+      "name_it": "XY trainer Kit (Latios)",
+      "name_en": "XY trainer Kit (Latios)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-latio/symbol.png",
+      "local_symbol": "symbols/tk-xy-latio.png",
+      "logo_url": null
+    },
+    "xy6": {
+      "id": "xy6",
+      "name_it": "Furie Volanti",
+      "name_en": "Roaring Skies",
+      "official_count": 108,
+      "total_count": 112,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy6/symbol.png",
+      "local_symbol": "symbols/xy6.png",
+      "logo_url": null
+    },
+    "xy7": {
+      "id": "xy7",
+      "name_it": "Antiche Origini",
+      "name_en": "Ancient Origins",
+      "official_count": 98,
+      "total_count": 101,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy7/symbol.png",
+      "local_symbol": "symbols/xy7.png",
+      "logo_url": null
+    },
+    "xy8": {
+      "id": "xy8",
+      "name_it": "Turbo Blitz",
+      "name_en": "BREAKthrough",
+      "official_count": 162,
+      "total_count": 165,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy8/symbol.png",
+      "local_symbol": "symbols/xy8.png",
+      "logo_url": null
+    },
+    "2015xy": {
+      "id": "2015xy",
+      "name_it": "McDonald's Collection 2015",
+      "name_en": "McDonald's Collection 2015",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "xy9": {
+      "id": "xy9",
+      "name_it": "Turbo Crash",
+      "name_en": "BREAKpoint",
+      "official_count": 122,
+      "total_count": 126,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy9/symbol.png",
+      "local_symbol": "symbols/xy9.png",
+      "logo_url": null
+    },
+    "g1": {
+      "id": "g1",
+      "name_it": "Generazioni",
+      "name_en": "Generations",
+      "official_count": 83,
+      "total_count": 83,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/g1/symbol.png",
+      "local_symbol": "symbols/g1.png",
+      "logo_url": null
+    },
+    "tk-xy-su": {
+      "id": "tk-xy-su",
+      "name_it": "XY trainer Kit (Suicune)",
+      "name_en": "XY trainer Kit (Suicune)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-su/symbol.png",
+      "local_symbol": "symbols/tk-xy-su.png",
+      "logo_url": null
+    },
+    "tk-xy-p": {
+      "id": "tk-xy-p",
+      "name_it": "XY trainer Kit (Pikachu Libre)",
+      "name_en": "XY trainer Kit (Pikachu Libre)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-xy-p/symbol.png",
+      "local_symbol": "symbols/tk-xy-p.png",
+      "logo_url": null
+    },
+    "xy10": {
+      "id": "xy10",
+      "name_it": "Destini Incrociati",
+      "name_en": "Fates Collide",
+      "official_count": 124,
+      "total_count": 129,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy10/symbol.png",
+      "local_symbol": "symbols/xy10.png",
+      "logo_url": null
+    },
+    "xy11": {
+      "id": "xy11",
+      "name_it": "Vapori Accesi",
+      "name_en": "Steam Siege",
+      "official_count": 114,
+      "total_count": 116,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy11/symbol.png",
+      "local_symbol": "symbols/xy11.png",
+      "logo_url": null
+    },
+    "2016xy": {
+      "id": "2016xy",
+      "name_it": "McDonald's Collection 2016",
+      "name_en": "McDonald's Collection 2016",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "xy12": {
+      "id": "xy12",
+      "name_it": "Evoluzioni",
+      "name_en": "Evolutions",
+      "official_count": 108,
+      "total_count": 113,
+      "symbol_url": "https://assets.tcgdex.net/en/xy/xy12/symbol.png",
+      "local_symbol": "symbols/xy12.png",
+      "logo_url": null
+    },
+    "smp": {
+      "id": "smp",
+      "name_it": "SL Promo",
+      "name_en": "SM Black Star Promos",
+      "official_count": 248,
+      "total_count": 248,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/smp/symbol.png",
+      "local_symbol": "symbols/smp.png",
+      "logo_url": null
+    },
+    "sm1": {
+      "id": "sm1",
+      "name_it": "Sole e Luna",
+      "name_en": "Sun & Moon",
+      "official_count": 149,
+      "total_count": 163,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm1/symbol.png",
+      "local_symbol": "symbols/sm1.png",
+      "logo_url": null
+    },
+    "tk-sm-l": {
+      "id": "tk-sm-l",
+      "name_it": "Sole e Luna trainer Kit (Lycanroc)",
+      "name_en": "SM trainer Kit (Lycanroc)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-sm-l/symbol.png",
+      "local_symbol": "symbols/tk-sm-l.png",
+      "logo_url": null
+    },
+    "tk-sm-r": {
+      "id": "tk-sm-r",
+      "name_it": "Sole e Luna trainer Kit (Alolan Raichu)",
+      "name_en": "SM trainer Kit (Alolan Raichu)",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": "https://assets.tcgdex.net/en/tk/tk-sm-r/symbol.png",
+      "local_symbol": "symbols/tk-sm-r.png",
+      "logo_url": null
+    },
+    "sm2": {
+      "id": "sm2",
+      "name_it": "Guardiani Nascenti",
+      "name_en": "Guardians Rising",
+      "official_count": 145,
+      "total_count": 169,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm2/symbol.png",
+      "local_symbol": "symbols/sm2.png",
+      "logo_url": null
+    },
+    "2017sm": {
+      "id": "2017sm",
+      "name_it": "McDonald's Collection 2017",
+      "name_en": "McDonald's Collection 2017",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sm3": {
+      "id": "sm3",
+      "name_it": "Ombre Infuocate",
+      "name_en": "Burning Shadows",
+      "official_count": 147,
+      "total_count": 169,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm3/symbol.png",
+      "local_symbol": "symbols/sm3.png",
+      "logo_url": null
+    },
+    "sm3.5": {
+      "id": "sm3.5",
+      "name_it": "Leggende Iridescenti",
+      "name_en": "Shining Legends",
+      "official_count": 73,
+      "total_count": 78,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sm4": {
+      "id": "sm4",
+      "name_it": "Invasione Scarlatta",
+      "name_en": "Crimson Invasion",
+      "official_count": 111,
+      "total_count": 124,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm4/symbol.png",
+      "local_symbol": "symbols/sm4.png",
+      "logo_url": null
+    },
+    "sm5": {
+      "id": "sm5",
+      "name_it": "Ultraprisma",
+      "name_en": "Ultra Prism",
+      "official_count": 156,
+      "total_count": 173,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm5/symbol.png",
+      "local_symbol": "symbols/sm5.png",
+      "logo_url": null
+    },
+    "sm6": {
+      "id": "sm6",
+      "name_it": "Apocalisse Di Luce",
+      "name_en": "Forbidden Light",
+      "official_count": 131,
+      "total_count": 146,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm6/symbol.png",
+      "local_symbol": "symbols/sm6.png",
+      "logo_url": null
+    },
+    "sm7": {
+      "id": "sm7",
+      "name_it": "Tempesta Astrale",
+      "name_en": "Celestial Storm",
+      "official_count": 168,
+      "total_count": 183,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm7/symbol.png",
+      "local_symbol": "symbols/sm7.png",
+      "logo_url": null
+    },
+    "sm7.5": {
+      "id": "sm7.5",
+      "name_it": "Trionfo Dei Draghi",
+      "name_en": "Dragon Majesty",
+      "official_count": 70,
+      "total_count": 78,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "2018sm": {
+      "id": "2018sm",
+      "name_it": "McDonald's Collection 2018",
+      "name_en": "McDonald's Collection 2018",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sm8": {
+      "id": "sm8",
+      "name_it": "Tuoni Perduti",
+      "name_en": "Lost Thunder",
+      "official_count": 214,
+      "total_count": 236,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm8/symbol.png",
+      "local_symbol": "symbols/sm8.png",
+      "logo_url": null
+    },
+    "sm9": {
+      "id": "sm9",
+      "name_it": "Gioco di Squadra",
+      "name_en": "Team Up",
+      "official_count": 181,
+      "total_count": 196,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm9/symbol.png",
+      "local_symbol": "symbols/sm9.png",
+      "logo_url": null
+    },
+    "det1": {
+      "id": "det1",
+      "name_it": "Detective Pikachu",
+      "name_en": "Detective Pikachu",
+      "official_count": 18,
+      "total_count": 18,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/det1/symbol.png",
+      "local_symbol": "symbols/det1.png",
+      "logo_url": null
+    },
+    "sm10": {
+      "id": "sm10",
+      "name_it": "Legami Inossidabili",
+      "name_en": "Unbroken Bonds",
+      "official_count": 214,
+      "total_count": 234,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm10/symbol.png",
+      "local_symbol": "symbols/sm10.png",
+      "logo_url": null
+    },
+    "sm11": {
+      "id": "sm11",
+      "name_it": "Sintonia Mentale",
+      "name_en": "Unified Minds",
+      "official_count": 236,
+      "total_count": 258,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm11/symbol.png",
+      "local_symbol": "symbols/sm11.png",
+      "logo_url": null
+    },
+    "sm115": {
+      "id": "sm115",
+      "name_it": "Destino Sfuggente",
+      "name_en": "Hidden Fates",
+      "official_count": 68,
+      "total_count": 68,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm115/symbol.png",
+      "local_symbol": "symbols/sm115.png",
+      "logo_url": null
+    },
+    "sma": {
+      "id": "sma",
+      "name_it": "Destino Sfuggente Tesoro Lucente",
+      "name_en": "Hidden Fates Shiny Vault",
+      "official_count": 94,
+      "total_count": 94,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sma/symbol.png",
+      "local_symbol": "symbols/sma.png",
+      "logo_url": null
+    },
+    "2019sm": {
+      "id": "2019sm",
+      "name_it": "McDonald's Collection 2019",
+      "name_en": "McDonald's Collection 2019",
+      "official_count": 12,
+      "total_count": 12,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sm12": {
+      "id": "sm12",
+      "name_it": "Eclissi Cosmica",
+      "name_en": "Cosmic Eclipse",
+      "official_count": 236,
+      "total_count": 271,
+      "symbol_url": "https://assets.tcgdex.net/en/sm/sm12/symbol.png",
+      "local_symbol": "symbols/sm12.png",
+      "logo_url": null
+    },
+    "swshp": {
+      "id": "swshp",
+      "name_it": "SPSC Promo",
+      "name_en": "SWSH Black Star Promos",
+      "official_count": 307,
+      "total_count": 307,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swshp/symbol.png",
+      "local_symbol": "symbols/swshp.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swshp/logo.png"
+    },
+    "swsh1": {
+      "id": "swsh1",
+      "name_it": "Spada e Scudo",
+      "name_en": "Sword & Shield",
+      "official_count": 202,
+      "total_count": 216,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh1/symbol.png",
+      "local_symbol": "symbols/swsh1.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh1/logo.png"
+    },
+    "swsh2": {
+      "id": "swsh2",
+      "name_it": "Fragore Ribelle",
+      "name_en": "Rebel Clash",
+      "official_count": 192,
+      "total_count": 209,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh2/symbol.png",
+      "local_symbol": "symbols/swsh2.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh2/logo.png"
+    },
+    "swsh3": {
+      "id": "swsh3",
+      "name_it": "Fiamme Oscure",
+      "name_en": "Darkness Ablaze",
+      "official_count": 189,
+      "total_count": 201,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh3/symbol.png",
+      "local_symbol": "symbols/swsh3.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh3/logo.png"
+    },
+    "swsh3.5": {
+      "id": "swsh3.5",
+      "name_it": "Futuri Campioni",
+      "name_en": "Champion's Path",
+      "official_count": 73,
+      "total_count": 80,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh3.5/symbol.png",
+      "local_symbol": "symbols/swsh3.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh3.5/logo.png"
+    },
+    "swsh4": {
+      "id": "swsh4",
+      "name_it": "Voltaggio Sfolgorante",
+      "name_en": "Vivid Voltage",
+      "official_count": 185,
+      "total_count": 203,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh4/symbol.png",
+      "local_symbol": "symbols/swsh4.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh4/logo.png"
+    },
+    "2021swsh": {
+      "id": "2021swsh",
+      "name_it": "McDonald's Collection 2021",
+      "name_en": "McDonald's Collection 2021",
+      "official_count": 25,
+      "total_count": 25,
+      "symbol_url": "https://assets.tcgdex.net/en/mc/2021swsh/symbol.png",
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh4.5sv": {
+      "id": "swsh4.5sv",
+      "name_it": "Destino Splendente Tesoro Lucente",
+      "name_en": "Shining Fates Shiny Vault",
+      "official_count": 122,
+      "total_count": 122,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh4.5": {
+      "id": "swsh4.5",
+      "name_it": "Destino Splendente",
+      "name_en": "Shining Fates",
+      "official_count": 72,
+      "total_count": 73,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh4.5/symbol.png",
+      "local_symbol": "symbols/swsh4.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh4.5/logo.png"
+    },
+    "swsh5": {
+      "id": "swsh5",
+      "name_it": "Stili di Lotta",
+      "name_en": "Battle Styles",
+      "official_count": 163,
+      "total_count": 183,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh5/symbol.png",
+      "local_symbol": "symbols/swsh5.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh5/logo.png"
+    },
+    "swsh6": {
+      "id": "swsh6",
+      "name_it": "Regno Glaciale",
+      "name_en": "Chilling Reign",
+      "official_count": 198,
+      "total_count": 233,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh6/symbol.png",
+      "local_symbol": "symbols/swsh6.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh6/logo.png"
+    },
+    "swsh7": {
+      "id": "swsh7",
+      "name_it": "Evoluzioni Eteree",
+      "name_en": "Evolving Skies",
+      "official_count": 203,
+      "total_count": 237,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh7/symbol.png",
+      "local_symbol": "symbols/swsh7.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh7/logo.png"
+    },
+    "cel25": {
+      "id": "cel25",
+      "name_it": "Gran Festa",
+      "name_en": "Celebrations",
+      "official_count": 25,
+      "total_count": 25,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/cel25/symbol.png",
+      "local_symbol": "symbols/cel25.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/cel25/logo.png"
+    },
+    "cel25cc": {
+      "id": "cel25cc",
+      "name_it": "Gran Festa Collezione Classica",
+      "name_en": "Celebrations Classic Collection",
+      "official_count": 25,
+      "total_count": 25,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh8": {
+      "id": "swsh8",
+      "name_it": "Colpo Fusione",
+      "name_en": "Fusion Strike",
+      "official_count": 264,
+      "total_count": 284,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh8/symbol.png",
+      "local_symbol": "symbols/swsh8.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh8/logo.png"
+    },
+    "swsh9tg": {
+      "id": "swsh9tg",
+      "name_it": "Astri Lucenti Galleria Allenatori",
+      "name_en": "Brilliant Stars Trainer Gallery",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh9": {
+      "id": "swsh9",
+      "name_it": "Astri Lucenti",
+      "name_en": "Brilliant Stars",
+      "official_count": 172,
+      "total_count": 186,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh9/symbol.png",
+      "local_symbol": "symbols/swsh9.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh9/logo.png"
+    },
+    "swsh10tg": {
+      "id": "swsh10tg",
+      "name_it": "Lucentezza Siderale Galleria Allenatori",
+      "name_en": "Astral Radiance Trainer Gallery",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh10": {
+      "id": "swsh10",
+      "name_it": "Lucentezza Siderale",
+      "name_en": "Astral Radiance",
+      "official_count": 189,
+      "total_count": 216,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh10/symbol.png",
+      "local_symbol": "symbols/swsh10.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh10/logo.png"
+    },
+    "swsh10.5": {
+      "id": "swsh10.5",
+      "name_it": "Pokémon GO",
+      "name_en": "Pokémon GO",
+      "official_count": 78,
+      "total_count": 88,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh10.5/symbol.png",
+      "local_symbol": "symbols/swsh10.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh10.5/logo.png"
+    },
+    "2022swsh": {
+      "id": "2022swsh",
+      "name_it": "McDonald's Collection 2022",
+      "name_en": "McDonald's Collection 2022",
+      "official_count": 15,
+      "total_count": 15,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh11": {
+      "id": "swsh11",
+      "name_it": "Origine Perduta",
+      "name_en": "Lost Origin",
+      "official_count": 196,
+      "total_count": 217,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh11/symbol.png",
+      "local_symbol": "symbols/swsh11.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh11/logo.png"
+    },
+    "swsh11tg": {
+      "id": "swsh11tg",
+      "name_it": "Origine Perduta Galleria Allenatori",
+      "name_en": "Lost Origin Trainer Gallery",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh12tg": {
+      "id": "swsh12tg",
+      "name_it": "Tempesta Argentata Galleria Allenatori",
+      "name_en": "Silver Tempest Trainer Gallery",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh12": {
+      "id": "swsh12",
+      "name_it": "Tempesta Argentata",
+      "name_en": "Silver Tempest",
+      "official_count": 195,
+      "total_count": 215,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh12/symbol.png",
+      "local_symbol": "symbols/swsh12.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh12/logo.png"
+    },
+    "swsh12.5gg": {
+      "id": "swsh12.5gg",
+      "name_it": "Zenit Regale Galleria di Galar",
+      "name_en": "Crown Zenith Galarian Gallery",
+      "official_count": 70,
+      "total_count": 70,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "swsh12.5": {
+      "id": "swsh12.5",
+      "name_it": "Zenit Regale",
+      "name_en": "Crown Zenith",
+      "official_count": 159,
+      "total_count": 160,
+      "symbol_url": "https://assets.tcgdex.net/en/swsh/swsh12.5/symbol.png",
+      "local_symbol": "symbols/swsh12.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/swsh/swsh12.5/logo.png"
+    },
+    "sv01": {
+      "id": "sv01",
+      "name_it": "Scarlatto e Violetto",
+      "name_en": "Scarlet & Violet",
+      "official_count": 198,
+      "total_count": 258,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv01/symbol.png",
+      "local_symbol": "symbols/sv01.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv01/logo.png"
+    },
+    "sve": {
+      "id": "sve",
+      "name_it": "Scarlatto e Violetto Energia",
+      "name_en": "Scarlet & Violet Energy",
+      "official_count": 24,
+      "total_count": 24,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "svp": {
+      "id": "svp",
+      "name_it": "SVP Black Star Promos",
+      "name_en": "SVP Black Star Promos",
+      "official_count": 225,
+      "total_count": 225,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sv02": {
+      "id": "sv02",
+      "name_it": "Evoluzioni a Paldea",
+      "name_en": "Paldea Evolved",
+      "official_count": 193,
+      "total_count": 279,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv02/symbol.png",
+      "local_symbol": "symbols/sv02.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv02/logo.png"
+    },
+    "2023sv": {
+      "id": "2023sv",
+      "name_it": "McDonald's Collection 2023",
+      "name_en": "McDonald's Collection 2023",
+      "official_count": 15,
+      "total_count": 15,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sv03": {
+      "id": "sv03",
+      "name_it": "Ossidiana Infuocata",
+      "name_en": "Obsidian Flames",
+      "official_count": 197,
+      "total_count": 230,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv03/symbol.png",
+      "local_symbol": "symbols/sv03.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv03/logo.png"
+    },
+    "sv03.5": {
+      "id": "sv03.5",
+      "name_it": "151",
+      "name_en": "151",
+      "official_count": 165,
+      "total_count": 207,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv03.5/symbol.png",
+      "local_symbol": "symbols/sv03.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv03.5/logo.png"
+    },
+    "sv04": {
+      "id": "sv04",
+      "name_it": "Paradosso Temporale",
+      "name_en": "Paradox Rift",
+      "official_count": 182,
+      "total_count": 266,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv04/symbol.png",
+      "local_symbol": "symbols/sv04.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv04/logo.png"
+    },
+    "sv04.5": {
+      "id": "sv04.5",
+      "name_it": "Destino di Paldea",
+      "name_en": "Paldean Fates",
+      "official_count": 91,
+      "total_count": 245,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv04.5/symbol.png",
+      "local_symbol": "symbols/sv04.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv04.5/logo.png"
+    },
+    "sv05": {
+      "id": "sv05",
+      "name_it": "Cronoforze",
+      "name_en": "Temporal Forces",
+      "official_count": 162,
+      "total_count": 218,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv05/symbol.png",
+      "local_symbol": "symbols/sv05.png",
+      "logo_url": null
+    },
+    "sv06": {
+      "id": "sv06",
+      "name_it": "Crepuscolo Mascherato",
+      "name_en": "Twilight Masquerade",
+      "official_count": 167,
+      "total_count": 226,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv06/symbol.png",
+      "local_symbol": "symbols/sv06.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv06/logo.png"
+    },
+    "sv06.5": {
+      "id": "sv06.5",
+      "name_it": "Segreto Fiabesco",
+      "name_en": "Shrouded Fable",
+      "official_count": 64,
+      "total_count": 99,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv06.5/symbol.png",
+      "local_symbol": "symbols/sv06.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv06.5/logo.png"
+    },
+    "sv07": {
+      "id": "sv07",
+      "name_it": "Corona Astrale",
+      "name_en": "Stellar Crown",
+      "official_count": 142,
+      "total_count": 175,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv07/logo.png"
+    },
+    "A1": {
+      "id": "A1",
+      "name_it": "Geni Supremi",
+      "name_en": "Genetic Apex",
+      "official_count": 226,
+      "total_count": 286,
+      "symbol_url": "https://assets.tcgdex.net/en/tcgp/A1/symbol.png",
+      "local_symbol": "symbols/A1.png",
+      "logo_url": null
+    },
+    "P-A": {
+      "id": "P-A",
+      "name_it": "Promo-A",
+      "name_en": "Promos-A",
+      "official_count": 0,
+      "total_count": 73,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sv08": {
+      "id": "sv08",
+      "name_it": "Scintille Folgoranti",
+      "name_en": "Surging Sparks",
+      "official_count": 191,
+      "total_count": 252,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv08/logo.png"
+    },
+    "2024sv": {
+      "id": "2024sv",
+      "name_it": "McDonald's Collection 2024",
+      "name_en": "McDonald's Collection 2024",
+      "official_count": 15,
+      "total_count": 15,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "A1a": {
+      "id": "A1a",
+      "name_it": "L'Isola Misteriosa",
+      "name_en": "Mythical Island",
+      "official_count": 68,
+      "total_count": 86,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sv08.5": {
+      "id": "sv08.5",
+      "name_it": "Evoluzioni Prismatiche",
+      "name_en": "Prismatic Evolutions",
+      "official_count": 131,
+      "total_count": 180,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv08.5/logo.png"
+    },
+    "A2": {
+      "id": "A2",
+      "name_it": "Scontro Spaziotemporale",
+      "name_en": "Space-Time Smackdown",
+      "official_count": 140,
+      "total_count": 207,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "A2a": {
+      "id": "A2a",
+      "name_it": "Luce Trionfale",
+      "name_en": "Triumphant Light",
+      "official_count": 75,
+      "total_count": 96,
+      "symbol_url": "https://assets.tcgdex.net/en/tcgp/A2a/symbol.png",
+      "local_symbol": "symbols/A2a.png",
+      "logo_url": null
+    },
+    "A2b": {
+      "id": "A2b",
+      "name_it": "Tripudio Splendente",
+      "name_en": "Shining Revelry",
+      "official_count": 72,
+      "total_count": 111,
+      "symbol_url": "https://assets.tcgdex.net/en/tcgp/A2b/symbol.png",
+      "local_symbol": "symbols/A2b.png",
+      "logo_url": null
+    },
+    "sv09": {
+      "id": "sv09",
+      "name_it": "Avventure Insieme",
+      "name_en": "Journey Together",
+      "official_count": 159,
+      "total_count": 190,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv09/symbol.png",
+      "local_symbol": "symbols/sv09.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv09/logo.png"
+    },
+    "A3": {
+      "id": "A3",
+      "name_it": "Guardiani Astrali",
+      "name_en": "Celestial Guardians",
+      "official_count": 155,
+      "total_count": 239,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "sv10": {
+      "id": "sv10",
+      "name_it": "Rivali Predestinati",
+      "name_en": "Destined Rivals",
+      "official_count": 182,
+      "total_count": 244,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv10/symbol.png",
+      "local_symbol": "symbols/sv10.png",
+      "logo_url": "https://assets.tcgdex.net/it/sv/sv10/logo.png"
+    },
+    "sv10.5w": {
+      "id": "sv10.5w",
+      "name_it": "Fuoco Bianco",
+      "name_en": "White Flare",
+      "official_count": 86,
+      "total_count": 173,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv10.5w/symbol.png",
+      "local_symbol": "symbols/sv10.5w.png",
+      "logo_url": null
+    },
+    "sv10.5b": {
+      "id": "sv10.5b",
+      "name_it": "Luce Nera",
+      "name_en": "Black Bolt",
+      "official_count": 86,
+      "total_count": 172,
+      "symbol_url": "https://assets.tcgdex.net/en/sv/sv10.5b/symbol.png",
+      "local_symbol": "symbols/sv10.5b.png",
+      "logo_url": null
+    },
+    "A4a": {
+      "id": "A4a",
+      "name_it": "Sorgenti Recondite",
+      "name_en": "Secluded Springs",
+      "official_count": 71,
+      "total_count": 71,
+      "symbol_url": "https://assets.tcgdex.net/en/tcgp/A4a/symbol.png",
+      "local_symbol": "symbols/A4a.png",
+      "logo_url": null
+    },
+    "mee": {
+      "id": "mee",
+      "name_it": "Megaevoluzione Energia",
+      "name_en": "Mega Evolution Energy",
+      "official_count": 16,
+      "total_count": 16,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "mep": {
+      "id": "mep",
+      "name_it": "MEP Black Star Promos",
+      "name_en": "MEP Black Star Promos",
+      "official_count": 0,
+      "total_count": 80,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "me01": {
+      "id": "me01",
+      "name_it": "Megaevoluzione",
+      "name_en": "Mega Evolution",
+      "official_count": 132,
+      "total_count": 188,
+      "symbol_url": "https://assets.tcgdex.net/en/me/me01/symbol.png",
+      "local_symbol": "symbols/me01.png",
+      "logo_url": "https://assets.tcgdex.net/it/me/me01/logo.png"
+    },
+    "me02": {
+      "id": "me02",
+      "name_it": "Fiamme Spettrali",
+      "name_en": "Phantasmal Flames",
+      "official_count": 94,
+      "total_count": 130,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": "https://assets.tcgdex.net/it/me/me02/logo.png"
+    },
+    "B1a": {
+      "id": "B1a",
+      "name_it": "Fiamme Cremisi",
+      "name_en": "Crimson Blaze",
+      "official_count": 69,
+      "total_count": 69,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "B2": {
+      "id": "B2",
+      "name_it": "Parata Fantasmagorica",
+      "name_en": "Fantastical Parade",
+      "official_count": 155,
+      "total_count": 155,
+      "symbol_url": "https://assets.tcgdex.net/en/tcgp/B2/symbol.png",
+      "local_symbol": "symbols/B2.png",
+      "logo_url": null
+    },
+    "me02.5": {
+      "id": "me02.5",
+      "name_it": "Ascesa Eroica",
+      "name_en": "Ascended Heroes",
+      "official_count": 217,
+      "total_count": 295,
+      "symbol_url": "https://assets.tcgdex.net/en/me/me02.5/symbol.png",
+      "local_symbol": "symbols/me02.5.png",
+      "logo_url": "https://assets.tcgdex.net/it/me/me02.5/logo.png"
+    },
+    "B2a": {
+      "id": "B2a",
+      "name_it": "Paldean Wonders",
+      "name_en": "Paldean Wonders",
+      "official_count": 93,
+      "total_count": 129,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "me03": {
+      "id": "me03",
+      "name_it": "Equilibrio Perfetto",
+      "name_en": "Perfect Order",
+      "official_count": 88,
+      "total_count": 124,
+      "symbol_url": "https://assets.tcgdex.net/en/me/me03/symbol.png",
+      "local_symbol": "symbols/me03.png",
+      "logo_url": "https://assets.tcgdex.net/it/me/me03/logo.png"
+    },
+    "me04": {
+      "id": "me04",
+      "name_it": "Caos Nascente",
+      "name_en": "Chaos Rising",
+      "official_count": 86,
+      "total_count": 122,
+      "symbol_url": "https://assets.tcgdex.net/en/me/me04/symbol.png",
+      "local_symbol": "symbols/me04.png",
+      "logo_url": "https://assets.tcgdex.net/it/me/me04/logo.png"
+    },
+    "me05": {
+      "id": "me05",
+      "name_it": "Buio Pesto",
+      "name_en": "Pitch Black",
+      "official_count": 84,
+      "total_count": 120,
+      "symbol_url": "https://assets.tcgdex.net/en/me/me05/symbol.png",
+      "local_symbol": null,
+      "logo_url": "https://assets.tcgdex.net/it/me/me05/logo.png"
+    },
+    "30th-c": {
+      "id": "30th-c",
+      "name_it": "Collzione Classica del 30°",
+      "name_en": "30th Classic Collection",
+      "official_count": 30,
+      "total_count": 30,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    },
+    "30th": {
+      "id": "30th",
+      "name_it": "30° Anniversario",
+      "name_en": "30th Celebration",
+      "official_count": 128,
+      "total_count": 161,
+      "symbol_url": null,
+      "local_symbol": null,
+      "logo_url": null
+    }
+  },
+  "abbreviations": {
+    "SVI": "sv01",
+    "SV1": "sv01",
+    "PAL": "sv02",
+    "SV2": "sv02",
+    "OBF": "sv03",
+    "SV3": "sv03",
+    "MEW": "sv03.5",
+    "151": "sv03.5",
+    "PAR": "sv04",
+    "SV4": "sv04",
+    "PAF": "sv04.5",
+    "TEF": "sv05",
+    "SV5": "sv05",
+    "TWM": "sv06",
+    "SV6": "sv06",
+    "SFA": "sv06.5",
+    "SCR": "sv07",
+    "SV7": "sv07",
+    "SSP": "sv08",
+    "SV8": "sv08",
+    "PRE": "sv08.5",
+    "SVP": "svp",
+    "SSH": "swsh1",
+    "SWSH1": "swsh1",
+    "RCL": "swsh2",
+    "SWSH2": "swsh2",
+    "DAA": "swsh3",
+    "SWSH3": "swsh3",
+    "CPA": "swsh3.5",
+    "VIV": "swsh4",
+    "SWSH4": "swsh4",
+    "SHF": "swsh4.5",
+    "BST": "swsh5",
+    "SWSH5": "swsh5",
+    "CRE": "swsh6",
+    "SWSH6": "swsh6",
+    "EVS": "swsh7",
+    "SWSH7": "swsh7",
+    "CEL": "swsh7.5",
+    "FST": "swsh8",
+    "SWSH8": "swsh8",
+    "BRS": "swsh9",
+    "SWSH9": "swsh9",
+    "ASR": "swsh10",
+    "SWSH10": "swsh10",
+    "PGO": "pgo",
+    "LOR": "swsh11",
+    "SWSH11": "swsh11",
+    "SIT": "swsh12",
+    "SWSH12": "swsh12",
+    "CRZ": "swsh12.5",
+    "SWSH12.5": "swsh12.5",
+    "SWSHP": "swshp",
+    "SUM": "sm1",
+    "SM1": "sm1",
+    "GRI": "sm2",
+    "SM2": "sm2",
+    "BUS": "sm3",
+    "SM3": "sm3",
+    "SLG": "sm3.5",
+    "CIN": "sm4",
+    "SM4": "sm4",
+    "UPR": "sm5",
+    "SM5": "sm5",
+    "FLI": "sm6",
+    "SM6": "sm6",
+    "CES": "sm7",
+    "SM7": "sm7",
+    "DRM": "sm7.5",
+    "LOT": "sm8",
+    "SM8": "sm8",
+    "TEU": "sm9",
+    "SM9": "sm9",
+    "UNB": "sm10",
+    "SM10": "sm10",
+    "UNM": "sm11",
+    "SM11": "sm11",
+    "HIF": "sm11.5",
+    "CEC": "sm12",
+    "SM12": "sm12",
+    "SMP": "smp",
+    "BASE1": "base1",
+    "BASE2": "base2",
+    "BASEP": "basep",
+    "WP": "wp",
+    "BASE3": "base3",
+    "BASE5": "base5",
+    "NEO1": "neo1",
+    "NEO2": "neo2",
+    "NEO3": "neo3",
+    "NEO4": "neo4",
+    "ECARD1": "ecard1",
+    "ECARD2": "ecard2",
+    "ECARD3": "ecard3",
+    "EX1": "ex1",
+    "EX2": "ex2",
+    "NP": "np",
+    "EX3": "ex3",
+    "EX4": "ex4",
+    "EX5": "ex5",
+    "TK-EX-LATIA": "tk-ex-latia",
+    "TK-EX-LATIO": "tk-ex-latio",
+    "EX6": "ex6",
+    "POP1": "pop1",
+    "EX8": "ex8",
+    "EX9": "ex9",
+    "POP2": "pop2",
+    "EXU": "exu",
+    "EX10": "ex10",
+    "EX11": "ex11",
+    "EX12": "ex12",
+    "TK-EX-P": "tk-ex-p",
+    "TK-EX-M": "tk-ex-m",
+    "POP3": "pop3",
+    "EX13": "ex13",
+    "POP4": "pop4",
+    "EX14": "ex14",
+    "EX15": "ex15",
+    "POP5": "pop5",
+    "DPP": "dpp",
+    "DP1": "dp1",
+    "DP2": "dp2",
+    "TK-DP-L": "tk-dp-l",
+    "TK-DP-M": "tk-dp-m",
+    "DP3": "dp3",
+    "DP4": "dp4",
+    "POP7": "pop7",
+    "DP5": "dp5",
+    "DP6": "dp6",
+    "DP7": "dp7",
+    "PL1": "pl1",
+    "POP9": "pop9",
+    "PL2": "pl2",
+    "PL4": "pl4",
+    "HGSS1": "hgss1",
+    "HGSSP": "hgssp",
+    "TK-HS-R": "tk-hs-r",
+    "TK-HS-G": "tk-hs-g",
+    "HGSS2": "hgss2",
+    "HGSS3": "hgss3",
+    "HGSS4": "hgss4",
+    "COL1": "col1",
+    "BW1": "bw1",
+    "BWP": "bwp",
+    "2011BW": "2011bw",
+    "BW2": "bw2",
+    "BW3": "bw3",
+    "BW4": "bw4",
+    "BW5": "bw5",
+    "2012BW": "2012bw",
+    "BW6": "bw6",
+    "DV1": "dv1",
+    "BW7": "bw7",
+    "BW8": "bw8",
+    "BW9": "bw9",
+    "BW10": "bw10",
+    "XYP": "xyp",
+    "XY0": "xy0",
+    "XY1": "xy1",
+    "XYA": "xya",
+    "TK-XY-SY": "tk-xy-sy",
+    "TK-XY-N": "tk-xy-n",
+    "XY2": "xy2",
+    "2014XY": "2014xy",
+    "XY3": "xy3",
+    "TK-XY-B": "tk-xy-b",
+    "TK-XY-W": "tk-xy-w",
+    "XY4": "xy4",
+    "XY5": "xy5",
+    "TK-XY-LATIA": "tk-xy-latia",
+    "TK-XY-LATIO": "tk-xy-latio",
+    "XY6": "xy6",
+    "XY7": "xy7",
+    "XY8": "xy8",
+    "2015XY": "2015xy",
+    "XY9": "xy9",
+    "G1": "g1",
+    "TK-XY-SU": "tk-xy-su",
+    "TK-XY-P": "tk-xy-p",
+    "XY10": "xy10",
+    "XY11": "xy11",
+    "2016XY": "2016xy",
+    "XY12": "xy12",
+    "TK-SM-L": "tk-sm-l",
+    "TK-SM-R": "tk-sm-r",
+    "2017SM": "2017sm",
+    "SM3.5": "sm3.5",
+    "SM7.5": "sm7.5",
+    "2018SM": "2018sm",
+    "DET1": "det1",
+    "SM115": "sm115",
+    "SMA": "sma",
+    "2019SM": "2019sm",
+    "SWSH3.5": "swsh3.5",
+    "2021SWSH": "2021swsh",
+    "SWSH4.5SV": "swsh4.5sv",
+    "SWSH4.5": "swsh4.5",
+    "CEL25": "cel25",
+    "CEL25CC": "cel25cc",
+    "SWSH9TG": "swsh9tg",
+    "SWSH10TG": "swsh10tg",
+    "SWSH10.5": "swsh10.5",
+    "2022SWSH": "2022swsh",
+    "SWSH11TG": "swsh11tg",
+    "SWSH12TG": "swsh12tg",
+    "SWSH12.5GG": "swsh12.5gg",
+    "SV01": "sv01",
+    "SVE": "sve",
+    "SV02": "sv02",
+    "2023SV": "2023sv",
+    "SV03": "sv03",
+    "SV03.5": "sv03.5",
+    "SV04": "sv04",
+    "SV04.5": "sv04.5",
+    "SV05": "sv05",
+    "SV06": "sv06",
+    "SV06.5": "sv06.5",
+    "SV07": "sv07",
+    "A1": "A1",
+    "P-A": "P-A",
+    "SV08": "sv08",
+    "2024SV": "2024sv",
+    "A1A": "A1a",
+    "SV08.5": "sv08.5",
+    "A2": "A2",
+    "A2A": "A2a",
+    "A2B": "A2b",
+    "SV09": "sv09",
+    "A3": "A3",
+    "SV10": "sv10",
+    "SV10.5W": "sv10.5w",
+    "SV10.5B": "sv10.5b",
+    "A4A": "A4a",
+    "MEE": "mee",
+    "MEP": "mep",
+    "ME01": "me01",
+    "ME02": "me02",
+    "B1A": "B1a",
+    "B2": "B2",
+    "ME02.5": "me02.5",
+    "B2A": "B2a",
+    "ME03": "me03",
+    "ME04": "me04",
+    "ME05": "me05",
+    "30TH-C": "30th-c",
+    "30TH": "30th"
+  },
+  "denominator_index": {
+    "102": [
+      "base1",
+      "hgss4",
+      "bw3"
+    ],
+    "64": [
+      "base2",
+      "neo3",
+      "sv06.5"
+    ],
+    "53": [
+      "basep"
+    ],
+    "7": [
+      "wp"
+    ],
+    "62": [
+      "base3"
+    ],
+    "82": [
+      "base5"
+    ],
+    "111": [
+      "neo1",
+      "pl2",
+      "bw5",
+      "xy3",
+      "sm4",
+      "A2b"
+    ],
+    "75": [
+      "neo2",
+      "A2a"
+    ],
+    "105": [
+      "neo4",
+      "bw10"
+    ],
+    "165": [
+      "ecard1",
+      "xy8",
+      "sv03.5"
+    ],
+    "147": [
+      "ecard2",
+      "sm3"
+    ],
+    "144": [
+      "ecard3"
+    ],
+    "109": [
+      "ex1"
+    ],
+    "100": [
+      "ex2",
+      "ex14",
+      "dp5",
+      "dp7"
+    ],
+    "40": [
+      "np"
+    ],
+    "97": [
+      "ex3"
+    ],
+    "95": [
+      "ex4",
+      "hgss2",
+      "col1"
+    ],
+    "101": [
+      "ex5",
+      "ex15",
+      "bwp",
+      "bw3",
+      "bw10",
+      "xy7"
+    ],
+    "10": [
+      "tk-ex-latia",
+      "tk-ex-latio"
+    ],
+    "112": [
+      "ex6",
+      "xy6"
+    ],
+    "17": [
+      "pop1",
+      "pop2",
+      "pop3",
+      "pop4",
+      "pop5",
+      "pop7",
+      "pop9"
+    ],
+    "107": [
+      "ex8"
+    ],
+    "106": [
+      "ex9",
+      "dp4",
+      "xy2"
+    ],
+    "28": [
+      "exu"
+    ],
+    "115": [
+      "ex10",
+      "bw1"
+    ],
+    "113": [
+      "ex11",
+      "xy12"
+    ],
+    "92": [
+      "ex12"
+    ],
+    "12": [
+      "tk-ex-p",
+      "tk-ex-m",
+      "tk-dp-m",
+      "2011bw",
+      "2012bw",
+      "2014xy",
+      "2015xy",
+      "2016xy",
+      "2017sm",
+      "2018sm",
+      "2019sm"
+    ],
+    "110": [
+      "ex13",
+      "xy2"
+    ],
+    "56": [
+      "dpp"
+    ],
+    "130": [
+      "dp1",
+      "me02"
+    ],
+    "123": [
+      "dp2",
+      "hgss1"
+    ],
+    "11": [
+      "tk-dp-l"
+    ],
+    "132": [
+      "dp3",
+      "me01"
+    ],
+    "146": [
+      "dp6",
+      "xy1",
+      "sm6"
+    ],
+    "127": [
+      "pl1"
+    ],
+    "99": [
+      "pl4",
+      "bw4",
+      "sv06.5"
+    ],
+    "25": [
+      "hgssp",
+      "2021swsh",
+      "cel25",
+      "cel25cc"
+    ],
+    "30": [
+      "tk-hs-r",
+      "tk-hs-g",
+      "tk-xy-sy",
+      "tk-xy-n",
+      "tk-xy-b",
+      "tk-xy-w",
+      "tk-xy-latia",
+      "tk-xy-latio",
+      "tk-xy-su",
+      "tk-xy-p",
+      "tk-sm-l",
+      "tk-sm-r",
+      "swsh9tg",
+      "swsh10tg",
+      "swsh11tg",
+      "swsh12tg",
+      "30th-c"
+    ],
+    "90": [
+      "hgss3"
+    ],
+    "114": [
+      "bw1",
+      "xy3",
+      "xy11"
+    ],
+    "98": [
+      "bw2",
+      "xy7"
+    ],
+    "103": [
+      "bw4"
+    ],
+    "108": [
+      "bw5",
+      "xy6",
+      "xy12"
+    ],
+    "124": [
+      "bw6",
+      "xy4",
+      "xy10",
+      "sm4",
+      "me03"
+    ],
+    "128": [
+      "bw6",
+      "30th"
+    ],
+    "20": [
+      "dv1"
+    ],
+    "149": [
+      "bw7",
+      "sm1"
+    ],
+    "153": [
+      "bw7"
+    ],
+    "135": [
+      "bw8"
+    ],
+    "138": [
+      "bw8"
+    ],
+    "116": [
+      "bw9",
+      "xy11"
+    ],
+    "122": [
+      "bw9",
+      "xy9",
+      "swsh4.5sv",
+      "me04"
+    ],
+    "211": [
+      "xyp"
+    ],
+    "39": [
+      "xy0"
+    ],
+    "6": [
+      "xya"
+    ],
+    "119": [
+      "xy4"
+    ],
+    "160": [
+      "xy5",
+      "swsh12.5"
+    ],
+    "164": [
+      "xy5"
+    ],
+    "162": [
+      "xy8",
+      "sv05"
+    ],
+    "126": [
+      "xy9"
+    ],
+    "83": [
+      "g1"
+    ],
+    "129": [
+      "xy10",
+      "B2a"
+    ],
+    "248": [
+      "smp"
+    ],
+    "163": [
+      "sm1",
+      "swsh5"
+    ],
+    "145": [
+      "sm2"
+    ],
+    "169": [
+      "sm2",
+      "sm3"
+    ],
+    "73": [
+      "sm3.5",
+      "swsh3.5",
+      "swsh4.5",
+      "P-A"
+    ],
+    "78": [
+      "sm3.5",
+      "sm7.5",
+      "swsh10.5"
+    ],
+    "156": [
+      "sm5"
+    ],
+    "173": [
+      "sm5",
+      "sv10.5w"
+    ],
+    "131": [
+      "sm6",
+      "sv08.5"
+    ],
+    "168": [
+      "sm7"
+    ],
+    "183": [
+      "sm7",
+      "swsh5"
+    ],
+    "70": [
+      "sm7.5",
+      "swsh12.5gg"
+    ],
+    "214": [
+      "sm8",
+      "sm10"
+    ],
+    "236": [
+      "sm8",
+      "sm11",
+      "sm12"
+    ],
+    "181": [
+      "sm9"
+    ],
+    "196": [
+      "sm9",
+      "swsh11"
+    ],
+    "18": [
+      "det1"
+    ],
+    "234": [
+      "sm10"
+    ],
+    "258": [
+      "sm11",
+      "sv01"
+    ],
+    "68": [
+      "sm115",
+      "A1a"
+    ],
+    "94": [
+      "sma",
+      "me02"
+    ],
+    "271": [
+      "sm12"
+    ],
+    "307": [
+      "swshp"
+    ],
+    "202": [
+      "swsh1"
+    ],
+    "216": [
+      "swsh1",
+      "swsh10"
+    ],
+    "192": [
+      "swsh2"
+    ],
+    "209": [
+      "swsh2"
+    ],
+    "189": [
+      "swsh3",
+      "swsh10"
+    ],
+    "201": [
+      "swsh3"
+    ],
+    "80": [
+      "swsh3.5",
+      "mep"
+    ],
+    "185": [
+      "swsh4"
+    ],
+    "203": [
+      "swsh4",
+      "swsh7"
+    ],
+    "72": [
+      "swsh4.5",
+      "A2b"
+    ],
+    "198": [
+      "swsh6",
+      "sv01"
+    ],
+    "233": [
+      "swsh6"
+    ],
+    "237": [
+      "swsh7"
+    ],
+    "264": [
+      "swsh8"
+    ],
+    "284": [
+      "swsh8"
+    ],
+    "172": [
+      "swsh9",
+      "sv10.5b"
+    ],
+    "186": [
+      "swsh9"
+    ],
+    "88": [
+      "swsh10.5",
+      "me03"
+    ],
+    "15": [
+      "2022swsh",
+      "2023sv",
+      "2024sv"
+    ],
+    "217": [
+      "swsh11",
+      "me02.5"
+    ],
+    "195": [
+      "swsh12"
+    ],
+    "215": [
+      "swsh12"
+    ],
+    "159": [
+      "swsh12.5",
+      "sv09"
+    ],
+    "24": [
+      "sve"
+    ],
+    "225": [
+      "svp"
+    ],
+    "193": [
+      "sv02"
+    ],
+    "279": [
+      "sv02"
+    ],
+    "197": [
+      "sv03"
+    ],
+    "230": [
+      "sv03"
+    ],
+    "207": [
+      "sv03.5",
+      "A2"
+    ],
+    "182": [
+      "sv04",
+      "sv10"
+    ],
+    "266": [
+      "sv04"
+    ],
+    "91": [
+      "sv04.5"
+    ],
+    "245": [
+      "sv04.5"
+    ],
+    "218": [
+      "sv05"
+    ],
+    "167": [
+      "sv06"
+    ],
+    "226": [
+      "sv06",
+      "A1"
+    ],
+    "142": [
+      "sv07"
+    ],
+    "175": [
+      "sv07"
+    ],
+    "286": [
+      "A1"
+    ],
+    "191": [
+      "sv08"
+    ],
+    "252": [
+      "sv08"
+    ],
+    "86": [
+      "A1a",
+      "sv10.5w",
+      "sv10.5b",
+      "me04"
+    ],
+    "180": [
+      "sv08.5"
+    ],
+    "140": [
+      "A2"
+    ],
+    "96": [
+      "A2a"
+    ],
+    "190": [
+      "sv09"
+    ],
+    "155": [
+      "A3",
+      "B2"
+    ],
+    "239": [
+      "A3"
+    ],
+    "244": [
+      "sv10"
+    ],
+    "71": [
+      "A4a"
+    ],
+    "16": [
+      "mee"
+    ],
+    "188": [
+      "me01"
+    ],
+    "69": [
+      "B1a"
+    ],
+    "295": [
+      "me02.5"
+    ],
+    "93": [
+      "B2a"
+    ],
+    "84": [
+      "me05"
+    ],
+    "120": [
+      "me05"
+    ],
+    "161": [
+      "30th"
+    ]
+  },
+  "generated_at": "2026-10-11 18:56:14"
+}
