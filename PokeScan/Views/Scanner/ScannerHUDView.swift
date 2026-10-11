@@ -1,5 +1,43 @@
 import SwiftUI
 
+// MARK: - Angolari Decorativi per Mirino Laser (Definiti in cima al file per visibilità immediata nello scope)
+public struct CornerBrackets: Shape {
+    public let width: CGFloat
+    public let height: CGFloat
+    public let length: CGFloat
+    
+    public init(width: CGFloat, height: CGFloat, length: CGFloat = 26) {
+        self.width = width
+        self.height = height
+        self.length = length
+    }
+    
+    public func path(in rect: CGRect) -> Path {
+        var p = Path()
+        // Alto Sinistra
+        p.move(to: CGPoint(x: 0, y: length))
+        p.addLine(to: CGPoint(x: 0, y: 0))
+        p.addLine(to: CGPoint(x: length, y: 0))
+        
+        // Alto Destra
+        p.move(to: CGPoint(x: width - length, y: 0))
+        p.addLine(to: CGPoint(x: width, y: 0))
+        p.addLine(to: CGPoint(x: width, y: length))
+        
+        // Basso Sinistra
+        p.move(to: CGPoint(x: 0, y: height - length))
+        p.addLine(to: CGPoint(x: 0, y: height))
+        p.addLine(to: CGPoint(x: length, y: height))
+        
+        // Basso Destra
+        p.move(to: CGPoint(x: width - length, y: height))
+        p.addLine(to: CGPoint(x: width, y: height))
+        p.addLine(to: CGPoint(x: width, y: height - length))
+        
+        return p
+    }
+}
+
 public struct ScannerHUDView: View {
     public let isTargetLocked: Bool
     public var isWaitingForNewCard: Bool = false
@@ -140,42 +178,5 @@ public struct ScannerHUDView: View {
             .padding(.bottom, 14)
         }
         .frame(width: reticleWidth, height: reticleHeight)
-    }
-}
-
-// Angolari decorativi per il mirino laser
-public struct CornerBrackets: Shape {
-    public let width: CGFloat
-    public let height: CGFloat
-    public let length: CGFloat = 26
-    
-    public init(width: CGFloat, height: CGFloat) {
-        self.width = width
-        self.height = height
-    }
-    
-    public func path(in rect: CGRect) -> Path {
-        var p = Path()
-        // Alto Sinistra
-        p.move(to: CGPoint(x: 0, y: length))
-        p.addLine(to: CGPoint(x: 0, y: 0))
-        p.addLine(to: CGPoint(x: length, y: 0))
-        
-        // Alto Destra
-        p.move(to: CGPoint(x: width - length, y: 0))
-        p.addLine(to: CGPoint(x: width, y: 0))
-        p.addLine(to: CGPoint(x: width, y: length))
-        
-        // Basso Sinistra
-        p.move(to: CGPoint(x: 0, y: height - length))
-        p.addLine(to: CGPoint(x: 0, y: height))
-        p.addLine(to: CGPoint(x: length, y: height))
-        
-        // Basso Destra
-        p.move(to: CGPoint(x: width - length, y: height))
-        p.addLine(to: CGPoint(x: width, y: height))
-        p.addLine(to: CGPoint(x: width, y: height - length))
-        
-        return p
     }
 }
