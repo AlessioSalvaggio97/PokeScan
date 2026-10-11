@@ -20,12 +20,38 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     private var lastProcessTime: TimeInterval = 0
     private var autoSaveTimer: AnyCancellable?
     
-    private var lastDetectedKey: String?
-    private var frameStabilityCount = 0
-    private var lastCommittedCardId: String?
+    // Tracking di stato e blocco anti-duplicati
+    private var activeTrackingLocalId: String?
+    private var activeTrackingSetId: String?
+    private var lastCommittedLocalId: String?
+    private var lastCommittedSetId: String?
+    private var newCardCandidateLocalId: String?
+    private var newCardStabilityCount = 0
     private var consecutiveEmptyFrames = 0
     
+    private var lastDetectedKey: String?
+    private var frameStabilityCount = 0
+    
     private init() {}
+    
+    private func normalizeLocalId(_ raw: String) -> String {
+        var cleaned = raw.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if cleaned.hasPrefix("O") && cleaned.dropFirst().allSatisfy({ $0.isNumber }) {
+            cleaned = "0" + cleaned.dropFirst()
+        }
+        return cleaned
+    }
+    
+    private func isMatchingLocalId(_ id1: String?, _ id2: String?) -> Bool {
+        guard let id1 = id1, let id2 = id2 else { return false }
+        let n1 = normalizeLocalId(id1)
+        let n2 = normalizeLocalId(id2)
+        if n1 == n2 { return true }
+        if let i1 = Int(n1), let i2 = Int(n2) {
+            return i1 == i2
+        }
+        return false
+    }
     
     public func didCaptureFrame(_ sampleBuffer: CMSampleBuffer) {
         let now = Date().timeIntervalSince1970
@@ -249,49 +275,80 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        guard let localId = detectedLocalId else {
+        guard let rawLocalId = detectedLocalId else {
             consecutiveEmptyFrames += 1
             // Se per almeno 3 frame consecutivi (~0.6-0.8s) non viene inquadrata alcuna carta:
             if consecutiveEmptyFrames >= 3 {
-                if isWaitingForNewCard || lastCommittedCardId != nil {
-                    lastCommittedCardId = nil
+                lastDetectedKey = nil
+                frameStabilityCount = 0
+                newCardCandidateLocalId = nil
+                newCardStabilityCount = 0
+                if isWaitingForNewCard || lastCommittedLocalId != nil {
+                    lastCommittedLocalId = nil
+                    lastCommittedSetId = nil
                     DispatchQueue.main.async { [weak self] in
                         self?.isWaitingForNewCard = false
                     }
                 }
-                lastDetectedKey = nil
-                frameStabilityCount = 0
             }
             return
         }
         
         // Carta rilevata nel frame corrente: azzera i frame vuoti
         consecutiveEmptyFrames = 0
+        let localId = normalizeLocalId(rawLocalId)
         
-        let simpleCardId = "\(detectedSetId ?? "unk")_\(localId)"
-        
-        // Se lo scanner è bloccato sulla carta appena acquisita:
-        if let committedId = lastCommittedCardId {
-            let isSameCard = (simpleCardId == committedId) ||
-                             (detectedSetId == nil && committedId.hasSuffix("_\(localId)")) ||
-                             (committedId.hasPrefix("unk_") && committedId.hasSuffix("_\(localId)"))
-            if isSameCard {
-                // La fotocamera sta ancora inquadrando la carta precedente: blocca la scansione!
+        // ------------------------------------------------------------------
+        // CASO 1: SISTEMA IN BLOCCO POST-SALVATAGGIO (Anti-Duplicati)
+        // ------------------------------------------------------------------
+        if isWaitingForNewCard, let committedLocalId = lastCommittedLocalId {
+            if isMatchingLocalId(localId, committedLocalId) {
+                // La fotocamera sta ANCORA inquadrando la stessa carta: blocca e ignora!
+                newCardCandidateLocalId = nil
+                newCardStabilityCount = 0
                 return
             } else {
-                // È arrivata una carta diversa! Rilascia immediatamente il blocco
-                lastCommittedCardId = nil
+                // Rilevato un numero diverso: verifica che sia stabile per almeno 2 frame
+                if isMatchingLocalId(newCardCandidateLocalId, localId) {
+                    newCardStabilityCount += 1
+                } else {
+                    newCardCandidateLocalId = localId
+                    newCardStabilityCount = 1
+                    return
+                }
+                
+                guard newCardStabilityCount >= 2 else { return }
+                
+                // Nuova carta confermata! Sblocca il sistema
+                lastCommittedLocalId = nil
+                lastCommittedSetId = nil
+                newCardCandidateLocalId = nil
+                newCardStabilityCount = 0
                 DispatchQueue.main.async { [weak self] in
                     self?.isWaitingForNewCard = false
                 }
             }
         }
         
-        let cardKey = "\(detectedSetId ?? "unk")_\(localId)_\(detectedPokemonName ?? "any")"
-        if let current = currentCard, "\(current.setId)_\(current.localId)" == simpleCardId {
+        // ------------------------------------------------------------------
+        // CASO 2: CARTA GIÀ INQUADRATA SUL BANNER (In-Place Refinement)
+        // ------------------------------------------------------------------
+        if let activeId = activeTrackingLocalId, isMatchingLocalId(localId, activeId) {
+            // È LA STESSA CARTA: non duplicare e non risalvare!
+            refineActiveCardIfNeeded(
+                detectedSetId: detectedSetId,
+                detectedPokemonName: detectedPokemonName,
+                totalCards: detectedTotalCards,
+                candidateSetIds: candidateSetIds,
+                language: detectedLanguage
+            )
             return
         }
         
+        // ------------------------------------------------------------------
+        // CASO 3: NUOVA CARTA DA AGGANCIARE (Richiede stabilità di 2 frame)
+        // ------------------------------------------------------------------
+        let cardKey = "\(detectedSetId ?? "unk")_\(localId)"
         if lastDetectedKey == cardKey {
             frameStabilityCount += 1
         } else {
@@ -301,6 +358,10 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         }
         
         guard frameStabilityCount >= 2 else { return }
+        
+        // Nuova carta stabilizzata: imposta il tracking
+        activeTrackingLocalId = localId
+        activeTrackingSetId = detectedSetId
         
         DispatchQueue.main.async { [weak self] in
             self?.handleDetectedCard(
@@ -314,6 +375,73 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         }
     }
     
+    /// Perfeziona i metadati della carta attualmente mostrata nel banner senza ricrearla o duplicarla
+    private func refineActiveCardIfNeeded(
+        detectedSetId: String?,
+        detectedPokemonName: String?,
+        totalCards: String?,
+        candidateSetIds: [String],
+        language: String
+    ) {
+        let hasNewSet = (detectedSetId != nil && detectedSetId != activeTrackingSetId)
+        guard hasNewSet || detectedPokemonName != nil else { return }
+        
+        if hasNewSet {
+            activeTrackingSetId = detectedSetId
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, var card = self.currentCard else { return }
+            var changed = false
+            
+            if let newSetId = detectedSetId, card.setId != newSetId {
+                card.setId = newSetId
+                let setInfo = SetCatalog.shared.sets[newSetId]
+                card.setName = setInfo?.localizedName(language: language) ?? newSetId.uppercased()
+                if let sym = SetCatalog.shared.getSymbolData(for: newSetId) {
+                    card.symbolData = sym
+                }
+                changed = true
+            }
+            
+            if let newName = detectedPokemonName?.capitalized, card.name.hasPrefix("Carta ") || (card.name != newName && !newName.isEmpty) {
+                card.name = newName
+                changed = true
+            }
+            
+            if changed {
+                self.currentCard = card
+                
+                Task {
+                    let resolved = await TCGdexService.shared.resolveCard(
+                        pokemonName: card.name,
+                        setId: card.setId,
+                        localId: card.localId,
+                        totalCards: totalCards ?? card.totalCards,
+                        candidateSetIds: candidateSetIds,
+                        language: language
+                    )
+                    await MainActor.run {
+                        if var active = self.currentCard, self.isMatchingLocalId(active.localId, card.localId) {
+                            active.name = resolved.name
+                            active.setId = resolved.setId
+                            active.setName = resolved.setName
+                            active.rarity = resolved.rarity
+                            active.imageURL = resolved.imageURL
+                            if let thumb = resolved.thumbnailData {
+                                active.thumbnailData = thumb
+                            }
+                            if let sym = SetCatalog.shared.getSymbolData(for: resolved.setId) {
+                                active.symbolData = sym
+                            }
+                            self.currentCard = active
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private func handleDetectedCard(
         pokemonName: String?,
         setId: String?,
@@ -322,7 +450,14 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         candidateSetIds: [String] = [],
         language: String
     ) {
-        commitCurrentCardIfPresent()
+        // Se c'era una carta precedente DIVERSA sul banner, salvala prima di sostituirla
+        if let existing = currentCard, !isMatchingLocalId(existing.localId, localId) {
+            commitCurrentCardIfPresent()
+        }
+        
+        lastCommittedLocalId = nil
+        lastCommittedSetId = nil
+        isWaitingForNewCard = false
         
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
@@ -364,7 +499,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             )
             
             await MainActor.run {
-                if var active = self.currentCard, active.localId == localId {
+                if var active = self.currentCard, self.isMatchingLocalId(active.localId, localId) {
                     active.name = resolved.name
                     active.setId = resolved.setId
                     active.setName = resolved.setName
@@ -389,7 +524,12 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         scanCountThisSession += 1
         
         // Blocca la scansione sulla carta appena acquisita finché non viene rimossa o cambiata
-        lastCommittedCardId = "\(card.setId)_\(card.localId)"
+        lastCommittedLocalId = card.localId
+        lastCommittedSetId = card.setId
+        activeTrackingLocalId = nil
+        activeTrackingSetId = nil
+        newCardCandidateLocalId = nil
+        newCardStabilityCount = 0
         isWaitingForNewCard = true
         
         currentCard = nil
@@ -398,9 +538,14 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     
     public func discardCurrentCard() {
         if let card = currentCard {
-            lastCommittedCardId = "\(card.setId)_\(card.localId)"
+            lastCommittedLocalId = card.localId
+            lastCommittedSetId = card.setId
             isWaitingForNewCard = true
         }
+        activeTrackingLocalId = nil
+        activeTrackingSetId = nil
+        newCardCandidateLocalId = nil
+        newCardStabilityCount = 0
         currentCard = nil
         stopAutoSaveTimer()
     }
