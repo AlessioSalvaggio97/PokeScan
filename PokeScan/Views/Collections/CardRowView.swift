@@ -80,31 +80,40 @@ public struct CardRowView: View {
             Spacer()
             
             // Badge Variante
-            Menu {
-                ForEach(CardVariant.allCases) { variant in
-                    Button(action: {
-                        onSelectVariant(variant)
-                    }) {
-                        HStack {
-                            Text(variant.rawValue)
-                            if card.variant == variant {
-                                Image(systemName: "checkmark")
+            HStack(spacing: 8) {
+                Menu {
+                    ForEach(CardVariant.allCases) { variant in
+                        Button(action: {
+                            onSelectVariant(variant)
+                        }) {
+                            HStack {
+                                Text(variant.rawValue)
+                                if card.variant == variant {
+                                    Image(systemName: "checkmark")
+                                }
                             }
                         }
                     }
+                } label: {
+                    Text(card.variant.rawValue)
+                        .font(.system(size: 12, weight: .bold))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(card.variant.badgeColor.opacity(0.2))
+                        .foregroundColor(card.variant.badgeColor)
+                        .cornerRadius(8)
                 }
-                Divider()
-                Button(role: .destructive, action: onDelete) {
-                    Label("Elimina carta", systemImage: "trash")
+                
+                // Pulsante Cestino Diretto
+                Button(action: onDelete) {
+                    Image(systemName: "trash")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(Color.red.opacity(0.8))
+                        .padding(6)
+                        .background(Color.red.opacity(0.12))
+                        .clipShape(Circle())
                 }
-            } label: {
-                Text(card.variant.rawValue)
-                    .font(.system(size: 12, weight: .bold))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(card.variant.badgeColor.opacity(0.2))
-                    .foregroundColor(card.variant.badgeColor)
-                    .cornerRadius(8)
+                .buttonStyle(.borderless)
             }
         }
         .padding(.vertical, 4)

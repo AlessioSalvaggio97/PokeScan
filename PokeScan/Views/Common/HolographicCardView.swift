@@ -3,6 +3,7 @@ import SwiftUI
 public struct HolographicCardView: View {
     public let card: PokemonCard
     public var onVariantChanged: ((CardVariant) -> Void)?
+    public var onDelete: (() -> Void)? = nil
     @Environment(\.dismiss) var dismiss
     
     // Gestione Inclinazione 3D (Parallasse)
@@ -275,6 +276,31 @@ public struct HolographicCardView: View {
                             .cornerRadius(10)
                         }
                     }
+                }
+            }
+            
+            Divider().background(Color.white.opacity(0.15))
+            
+            // Pulsante Elimina Carta
+            if let deleteAction = onDelete {
+                Button(role: .destructive) {
+                    deleteAction()
+                    dismiss()
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "trash.fill")
+                        Text("Elimina Carta dalla Collezione")
+                            .font(.system(size: 14, weight: .bold))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.red.opacity(0.25))
+                    .foregroundColor(Color(red: 1.0, green: 0.35, blue: 0.35))
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.red.opacity(0.4), lineWidth: 1)
+                    )
                 }
             }
         }

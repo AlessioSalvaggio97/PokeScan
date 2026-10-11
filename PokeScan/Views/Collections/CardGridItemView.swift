@@ -3,6 +3,13 @@ import SwiftUI
 public struct CardGridItemView: View {
     public let card: PokemonCard
     public let onTap: () -> Void
+    public var onDelete: (() -> Void)? = nil
+    
+    public init(card: PokemonCard, onTap: @escaping () -> Void, onDelete: (() -> Void)? = nil) {
+        self.card = card
+        self.onTap = onTap
+        self.onDelete = onDelete
+    }
     
     private var glowColor: Color {
         switch card.variant {
@@ -68,6 +75,21 @@ public struct CardGridItemView: View {
                         .cornerRadius(6)
                         .padding(6)
                         .neonGlow(color: card.variant.badgeColor, radius: 4)
+                }
+                .overlay(alignment: .topLeading) {
+                    if let deleteAction = onDelete {
+                        Button(action: deleteAction) {
+                            Image(systemName: "trash")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundColor(.white.opacity(0.9))
+                                .padding(6)
+                                .background(Color.black.opacity(0.7))
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.red.opacity(0.5), lineWidth: 1))
+                        }
+                        .buttonStyle(.plain)
+                        .padding(6)
+                    }
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)

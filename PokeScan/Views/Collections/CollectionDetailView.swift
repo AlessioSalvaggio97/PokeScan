@@ -55,9 +55,15 @@ public struct CollectionDetailView: View {
                                 if isGridView {
                                     LazyVGrid(columns: gridColumns, spacing: 14) {
                                         ForEach(filteredCards) { card in
-                                            CardGridItemView(card: card) {
-                                                selectedCardFor3D = card
-                                            }
+                                            CardGridItemView(
+                                                card: card,
+                                                onTap: {
+                                                    selectedCardFor3D = card
+                                                },
+                                                onDelete: {
+                                                    dataManager.deleteCard(collectionId: col.id, cardId: card.id)
+                                                }
+                                            )
                                             .contextMenu {
                                                 cardContextMenu(card: card, col: col)
                                             }
@@ -102,9 +108,15 @@ public struct CollectionDetailView: View {
                     }
                 }
                 .sheet(item: $selectedCardFor3D) { card in
-                    HolographicCardView(card: card) { newVariant in
-                        dataManager.updateCardVariant(collectionId: col.id, cardId: card.id, variant: newVariant)
-                    }
+                    HolographicCardView(
+                        card: card,
+                        onVariantChanged: { newVariant in
+                            dataManager.updateCardVariant(collectionId: col.id, cardId: card.id, variant: newVariant)
+                        },
+                        onDelete: {
+                            dataManager.deleteCard(collectionId: col.id, cardId: card.id)
+                        }
+                    )
                 }
             } else {
                 Text("Collezione non trovata")
