@@ -37,6 +37,8 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         }
     }
     
+    private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
+    
     private func processFrame(_ pixelBuffer: CVPixelBuffer) {
         let request = VNRecognizeTextRequest { [weak self] req, error in
             defer { self?.isBusy = false }
@@ -44,7 +46,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                   let observations = req.results as? [VNRecognizedTextObservation] else {
                 return
             }
-            self.analyzeObservations(observations)
+            self.analyzeObservations(observations, pixelBuffer: pixelBuffer)
         }
         
         request.recognitionLevel = .accurate
@@ -54,25 +56,51 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         try? handler.perform([request])
     }
     
-    private func analyzeObservations(_ observations: [VNRecognizedTextObservation]) {
+    /// Ritaglia una regione normalizzata Vision dal CVPixelBuffer e restituisce una CGImage
+    private func cropPixelBuffer(
+        _ pixelBuffer: CVPixelBuffer,
+        normalizedRect: CGRect
+    ) -> CGImage? {
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let extent = ciImage.extent
+        
+        let pixelRect = CGRect(
+            x: normalizedRect.origin.x * extent.width,
+            y: normalizedRect.origin.y * extent.height,
+            width: normalizedRect.width * extent.width,
+            height: normalizedRect.height * extent.height
+        )
+        
+        guard pixelRect.width > 10, pixelRect.height > 10, extent.contains(pixelRect) else {
+            return nil
+        }
+        return ciContext.createCGImage(ciImage, from: pixelRect)
+    }
+    
+    private func analyzeObservations(_ observations: [VNRecognizedTextObservation], pixelBuffer: CVPixelBuffer) {
         guard !observations.isEmpty else { return }
         
-        // 1. ESTRAZIONE E ORDINAMENTO SPAZIALE
-        // In Vision: y=1 è in alto, y=0 è in basso
-        let parsed = observations.compactMap { obs -> (text: String, y: CGFloat)? in
+        struct TextElement {
+            let text: String
+            let x: CGFloat
+            let y: CGFloat
+            let box: CGRect
+        }
+        
+        let elements = observations.compactMap { obs -> TextElement? in
             guard let top = obs.topCandidates(1).first else { return nil }
             let t = top.string.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !t.isEmpty else { return nil }
-            return (text: t, y: obs.boundingBox.origin.y)
+            return TextElement(text: t, x: obs.boundingBox.origin.x, y: obs.boundingBox.origin.y, box: obs.boundingBox)
         }
+        guard !elements.isEmpty else { return }
         
-        guard !parsed.isEmpty else { return }
-        let sortedDesc = parsed.sorted { $0.y > $1.y }
+        let sortedDesc = elements.sorted { $0.y > $1.y }
         
-        // 2. RICONOSCIMENTO NOME POKÉMON (Priorità alla metà superiore y >= 0.40)
+        // 1. RICONOSCIMENTO NOME POKÉMON (In alto, y >= 0.40)
         var detectedPokemonName: String? = nil
-        let topHalf = sortedDesc.filter { $0.y >= 0.40 }
-        for item in topHalf {
+        let topElements = sortedDesc.filter { $0.y >= 0.40 }
+        for item in topElements {
             if let name = cleanPokemonName(from: item.text), name.count >= 3 {
                 detectedPokemonName = name
                 break
@@ -87,7 +115,8 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        // 3. RICONOSCIMENTO CODICI (Set, Numero, Promo, Full Art)
+        // 2. ERA MODERNA (Scarlatto & Violetto / MegaEvoluzioni):
+        //    ISPEZIONE MIRATA DEL RIQUADRO IN BASSO A SINISTRA (x <= 0.48, y <= 0.40)
         var detectedSetId: String?
         var detectedLocalId: String?
         var detectedTotalCards: String?
@@ -95,18 +124,18 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         var detectedLanguage = "IT"
         
         let allJoined = sortedDesc.map { $0.text }.joined(separator: " ")
-        let bottomItems = sortedDesc.filter { $0.y <= 0.60 }
-        
-        // A. Lingua
         if let langMatch = allJoined.range(of: #"\b(IT|EN)\b"#, options: .regularExpression) {
             detectedLanguage = String(allJoined[langMatch]).uppercased()
         }
         
-        // B. RICONOSCIMENTO CODICE SET ESPLICITO (es. "[ME02.5]", "[SVI]", "[SCR]", "[SSP]", "[PAF]")
+        let bottomLeftElements = sortedDesc.filter { $0.x <= 0.48 && $0.y <= 0.40 }
+        let bottomLeftJoined = bottomLeftElements.map { $0.text }.joined(separator: " ")
+        
+        // A1. Cerca codice tra parentesi nel riquadro in basso a sinistra (es. "[SVI]", "[SCR]", "[ME02.5]")
         let bracketPattern = #"\[\s*([A-Za-z0-9.]{2,7})\s*\]"#
         if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
-            let ns = allJoined as NSString
-            let matches = regex.matches(in: allJoined, range: NSRange(location: 0, length: ns.length))
+            let ns = bottomLeftJoined as NSString
+            let matches = regex.matches(in: bottomLeftJoined, range: NSRange(location: 0, length: ns.length))
             for m in matches {
                 let code = ns.substring(with: m.range(at: 1))
                 if let setInfo = SetCatalog.shared.findSetByCode(code) {
@@ -116,9 +145,9 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        // B2. Se non tra parentesi, cerca token noti nei testi inferiori
+        // A2. Cerca token alfanumerici corrispondenti a sigle note nel riquadro in basso a sinistra (es. "SVI", "ASC", "SCR", "SSP")
         if detectedSetId == nil {
-            for item in bottomItems {
+            for item in bottomLeftElements {
                 let words = item.text.components(separatedBy: CharacterSet.alphanumerics.inverted)
                 for w in words where w.count >= 2 && w.count <= 6 {
                     if let setInfo = SetCatalog.shared.findSetByCode(w) {
@@ -130,7 +159,22 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        // C. RICONOSCIMENTO CARTE PROMO (es. "SVP 025", "SVP025", "SWSH 145", "SWSH145", "SMP 050")
+        // A3. Fallback: cerca codice tra parentesi in tutta la carta
+        if detectedSetId == nil {
+            if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
+                let ns = allJoined as NSString
+                let matches = regex.matches(in: allJoined, range: NSRange(location: 0, length: ns.length))
+                for m in matches {
+                    let code = ns.substring(with: m.range(at: 1))
+                    if let setInfo = SetCatalog.shared.findSetByCode(code) {
+                        detectedSetId = setInfo.id
+                        break
+                    }
+                }
+            }
+        }
+        
+        // 3. ESTRAZIONE CARTE PROMO & FRAZIONE NUMERO / TOTALE
         let promoPattern = #"(?i)\b(SVP|SWSHP|SWSH|SMP|SM|XYP|XY|BWP|DPP)\s*(?:EN|IT)?\s*#?([A-Za-z0-9]{1,4})\b"#
         if let regex = try? NSRegularExpression(pattern: promoPattern) {
             let ns = allJoined as NSString
@@ -149,7 +193,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        // D. RICONOSCIMENTO FRAZIONE NUMERICA / FULL ART (es. "123/217", "216/198", "TG05/TG30", "GG12/GG70")
+        // Cerca frazione numerica (es: "123/217", "045/149", "TG05/TG30", "GG12/GG70")
         if detectedLocalId == nil {
             let fracPattern = #"(?i)\b([A-Za-z]{0,2}\d{1,3})\s*/\s*(\d{1,3}|[A-Za-z]{0,2}\d{1,3})\b"#
             if let regex = try? NSRegularExpression(pattern: fracPattern) {
@@ -161,22 +205,50 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                     detectedLocalId = num
                     detectedTotalCards = total
                     
+                    // 4. ERA PRE-SCARLATTO & VIOLETTO (Spada & Scudo, Sole & Luna, XY, ecc.)
+                    //    Se non abbiamo rilevato un codice set moderno in basso a sinistra:
                     if detectedSetId == nil {
                         let candidates = SetCatalog.shared.findSetsByDenominator(total)
                         candidateSetIds = candidates.map { $0.id }
+                        
                         if candidates.count == 1 {
                             detectedSetId = candidates[0].id
+                        } else if candidates.count > 1 {
+                            // MATCHING VISIVO MIRATO SUI SIMBOLI DEI CANDIDATI
+                            let rightRect = CGRect(x: 0.68, y: 0.02, width: 0.28, height: 0.18)
+                            let leftRect = CGRect(x: 0.04, y: 0.02, width: 0.28, height: 0.18)
+                            
+                            var matchedCandidate: String? = nil
+                            var bestDistance: Float = 0.88 // Soglia per accettare somiglianza
+                            
+                            // Test zona destra (tipica di Sole & Luna / XY)
+                            if let rightCG = cropPixelBuffer(pixelBuffer, normalizedRect: rightRect),
+                               let resRight = SetCatalog.shared.matchBestCandidateSymbol(from: rightCG, among: candidateSetIds),
+                               resRight.distance < bestDistance {
+                                matchedCandidate = resRight.bestSetId
+                                bestDistance = resRight.distance
+                            }
+                            
+                            // Test zona sinistra (tipica di Spada & Scudo)
+                            if let leftCG = cropPixelBuffer(pixelBuffer, normalizedRect: leftRect),
+                               let resLeft = SetCatalog.shared.matchBestCandidateSymbol(from: leftCG, among: candidateSetIds),
+                               resLeft.distance < bestDistance {
+                                matchedCandidate = resLeft.bestSetId
+                                bestDistance = resLeft.distance
+                            }
+                            
+                            if let matched = matchedCandidate {
+                                detectedSetId = matched
+                            }
                         }
                     }
                 }
             }
         }
         
-        // Se non abbiamo nemmeno il numero locale, non possiamo identificare la carta
         guard let localId = detectedLocalId else { return }
         
         let cardKey = "\(detectedSetId ?? "unk")_\(localId)_\(detectedPokemonName ?? "any")"
-        
         if let current = currentCard, "\(current.setId)_\(current.localId)_\(current.name)" == cardKey {
             return
         }
@@ -189,7 +261,6 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             return
         }
         
-        // Stabilità: 2 frame consecutivi per confermare l'inquadratura
         guard frameStabilityCount >= 2 else { return }
         
         DispatchQueue.main.async { [weak self] in
