@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct ScannerHUDView: View {
     public let isTargetLocked: Bool
+    public var isWaitingForNewCard: Bool = false
     
     @State private var laserOffset: CGFloat = -160
     @State private var pulseScale: CGFloat = 1.0
@@ -15,17 +16,17 @@ public struct ScannerHUDView: View {
                 // Riquadro guida trasparente con bordo neon
                 RoundedRectangle(cornerRadius: 18)
                     .strokeBorder(
-                        isTargetLocked ? PokeTheme.neonGreen.opacity(0.8) : Color.white.opacity(0.25),
-                        style: StrokeStyle(lineWidth: isTargetLocked ? 2.5 : 1.5, dash: [10, 6])
+                        isWaitingForNewCard ? PokeTheme.neonGreen.opacity(0.8) : (isTargetLocked ? PokeTheme.neonGreen.opacity(0.8) : Color.white.opacity(0.25)),
+                        style: StrokeStyle(lineWidth: (isTargetLocked || isWaitingForNewCard) ? 2.5 : 1.5, dash: [10, 6])
                     )
                     .frame(width: reticleWidth, height: reticleHeight)
-                    .neonGlow(color: isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonCyan, radius: isTargetLocked ? 12 : 4)
+                    .neonGlow(color: (isTargetLocked || isWaitingForNewCard) ? PokeTheme.neonGreen : PokeTheme.neonCyan, radius: (isTargetLocked || isWaitingForNewCard) ? 12 : 4)
                 
                 // Angolari Hi-Tech con Glow
                 CornerBrackets(width: reticleWidth, height: reticleHeight)
-                    .stroke(isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonYellow, lineWidth: 3.5)
+                    .stroke((isTargetLocked || isWaitingForNewCard) ? PokeTheme.neonGreen : PokeTheme.neonYellow, lineWidth: 3.5)
                     .frame(width: reticleWidth, height: reticleHeight)
-                    .neonGlow(color: isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonYellow, radius: 8)
+                    .neonGlow(color: (isTargetLocked || isWaitingForNewCard) ? PokeTheme.neonGreen : PokeTheme.neonYellow, radius: 8)
                 
                 // Linea Laser Animata
                 laserBeamView
@@ -39,19 +40,20 @@ public struct ScannerHUDView: View {
             
             // Badge di Stato Hi-Tech
             HStack(spacing: 8) {
+                let badgeColor = isWaitingForNewCard ? PokeTheme.neonGreen : (isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonCyan)
                 Circle()
-                    .fill(isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonCyan)
+                    .fill(badgeColor)
                     .frame(width: 8, height: 8)
-                    .neonGlow(color: isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonCyan, radius: 6)
+                    .neonGlow(color: badgeColor, radius: 6)
                 
-                Text(isTargetLocked ? "CARTA AGGANCIATA" : "ALLINEA LA CARTA")
+                Text(isWaitingForNewCard ? "IN ATTESA PROSSIMA CARTA" : (isTargetLocked ? "CARTA AGGANCIATA" : "ALLINEA LA CARTA"))
                     .font(.system(size: 11, weight: .black, design: .monospaced))
                     .foregroundColor(.white)
-                    .tracking(1.5)
+                    .tracking(1.2)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 6)
-            .glassPanel(cornerRadius: 12, borderColor: isTargetLocked ? PokeTheme.neonGreen : PokeTheme.neonCyan)
+            .glassPanel(cornerRadius: 12, borderColor: (isTargetLocked || isWaitingForNewCard) ? PokeTheme.neonGreen : PokeTheme.neonCyan)
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {

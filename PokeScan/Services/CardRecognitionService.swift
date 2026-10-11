@@ -13,6 +13,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     @Published public var lastCommittedCardName: String?
     @Published public var autoSaveCountdown: Double = 0.0
     @Published public var scanCountThisSession: Int = 0
+    @Published public var isWaitingForNewCard = false
     
     private let visionQueue = DispatchQueue(label: "com.pokescan.vision", qos: .userInitiated)
     private var isBusy = false
@@ -21,6 +22,8 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     
     private var lastDetectedKey: String?
     private var frameStabilityCount = 0
+    private var lastCommittedCardId: String?
+    private var consecutiveEmptyFrames = 0
     
     private init() {}
     
@@ -246,10 +249,46 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        guard let localId = detectedLocalId else { return }
+        guard let localId = detectedLocalId else {
+            consecutiveEmptyFrames += 1
+            // Se per almeno 3 frame consecutivi (~0.6-0.8s) non viene inquadrata alcuna carta:
+            if consecutiveEmptyFrames >= 3 {
+                if isWaitingForNewCard || lastCommittedCardId != nil {
+                    lastCommittedCardId = nil
+                    DispatchQueue.main.async { [weak self] in
+                        self?.isWaitingForNewCard = false
+                    }
+                }
+                lastDetectedKey = nil
+                frameStabilityCount = 0
+            }
+            return
+        }
+        
+        // Carta rilevata nel frame corrente: azzera i frame vuoti
+        consecutiveEmptyFrames = 0
+        
+        let simpleCardId = "\(detectedSetId ?? "unk")_\(localId)"
+        
+        // Se lo scanner è bloccato sulla carta appena acquisita:
+        if let committedId = lastCommittedCardId {
+            let isSameCard = (simpleCardId == committedId) ||
+                             (detectedSetId == nil && committedId.hasSuffix("_\(localId)")) ||
+                             (committedId.hasPrefix("unk_") && committedId.hasSuffix("_\(localId)"))
+            if isSameCard {
+                // La fotocamera sta ancora inquadrando la carta precedente: blocca la scansione!
+                return
+            } else {
+                // È arrivata una carta diversa! Rilascia immediatamente il blocco
+                lastCommittedCardId = nil
+                DispatchQueue.main.async { [weak self] in
+                    self?.isWaitingForNewCard = false
+                }
+            }
+        }
         
         let cardKey = "\(detectedSetId ?? "unk")_\(localId)_\(detectedPokemonName ?? "any")"
-        if let current = currentCard, "\(current.setId)_\(current.localId)_\(current.name)" == cardKey {
+        if let current = currentCard, "\(current.setId)_\(current.localId)" == simpleCardId {
             return
         }
         
@@ -348,11 +387,20 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         DataManager.shared.addCardToActiveCollection(card)
         lastCommittedCardName = "\(card.name) (\(card.formattedNumber))"
         scanCountThisSession += 1
+        
+        // Blocca la scansione sulla carta appena acquisita finché non viene rimossa o cambiata
+        lastCommittedCardId = "\(card.setId)_\(card.localId)"
+        isWaitingForNewCard = true
+        
         currentCard = nil
         stopAutoSaveTimer()
     }
     
     public func discardCurrentCard() {
+        if let card = currentCard {
+            lastCommittedCardId = "\(card.setId)_\(card.localId)"
+            isWaitingForNewCard = true
+        }
         currentCard = nil
         stopAutoSaveTimer()
     }

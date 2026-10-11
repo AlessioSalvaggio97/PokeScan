@@ -36,7 +36,10 @@ public struct ScannerView: View {
                 Spacer()
                 
                 // Mirino Ottico Laser Hi-Tech
-                ScannerHUDView(isTargetLocked: recognitionService.currentCard != nil)
+                ScannerHUDView(
+                    isTargetLocked: recognitionService.currentCard != nil,
+                    isWaitingForNewCard: recognitionService.isWaitingForNewCard
+                )
                 
                 Spacer()
                 
@@ -61,6 +64,14 @@ public struct ScannerView: View {
                         insertion: .move(edge: .bottom).combined(with: .opacity),
                         removal: .scale.combined(with: .opacity)
                     ))
+                } else if recognitionService.isWaitingForNewCard {
+                    waitingForNewCardBanner
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 16)
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .bottom).combined(with: .opacity),
+                            removal: .opacity
+                        ))
                 } else {
                     bottomStatusView
                         .padding(.horizontal, 16)
@@ -211,5 +222,38 @@ public struct ScannerView: View {
             .padding(.vertical, 8)
             .glassPanel(cornerRadius: 16, borderColor: PokeTheme.neonGreen)
         }
+    }
+    
+    private var waitingForNewCardBanner: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(PokeTheme.neonGreen.opacity(0.18))
+                    .frame(width: 44, height: 44)
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 24))
+                    .foregroundColor(PokeTheme.neonGreen)
+                    .neonGlow(color: PokeTheme.neonGreen, radius: 8)
+            }
+            
+            VStack(alignment: .leading, spacing: 3) {
+                Text("CARTA ACQUISITA ✓")
+                    .font(.system(size: 14, weight: .black))
+                    .foregroundColor(.white)
+                Text("Rimuovi la carta o inquadra la successiva...")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.75))
+            }
+            
+            Spacer()
+            
+            Image(systemName: "hand.wave.fill")
+                .font(.system(size: 20))
+                .foregroundColor(PokeTheme.neonYellow)
+                .neonGlow(color: PokeTheme.neonYellow, radius: 6)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .glassPanel(cornerRadius: 18, borderColor: PokeTheme.neonGreen)
     }
 }
