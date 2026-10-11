@@ -38,12 +38,3 @@ PokéScan è un'applicazione nativa iOS in **SwiftUI** e **Apple Vision**, ottim
    - 193 Set Pokémon indicizzati in Italiano e Inglese (`sets_catalog.json`).
    - 143 Simboli grafici PNG ufficiali inclusi nell'app (`symbols/`).
 
----
-
-## 🚀 Come Aprire ed Eseguire su iPhone 16 con Xcode
-
-1. Apri **Xcode**.
-2. Fai doppio clic su `PokeScan.xcodeproj` all'interno della cartella `PokéScan`.
-3. Collega il tuo **iPhone 16** al Mac tramite cavo USB o Wi-Fi.
-4. Seleziona il tuo iPhone 16 nella barra dei dispositivi in alto.
-5. Clicca su **Run (▶)** per avviare e installare l'app.
