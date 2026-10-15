@@ -142,11 +142,14 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        // 2. ERA MODERNA (Scarlatto & Violetto / MegaEvoluzioni):
-        //    ISPEZIONE MIRATA DEL RIQUADRO IN BASSO A SINISTRA (x <= 0.48, y <= 0.40)
-        var detectedSetId: String?
-        var detectedLocalId: String?
-        var detectedTotalCards: String?
+        // ------------------------------------------------------------------
+        // LOGICA DI RICONOSCIMENTO RIGOROSA:
+        // if (parte_sinistra ha sigla)   -> cerca match sigla espansione -> cerca match numero
+        // else (parte sinistra ha logo)  -> cerca match logo espansione  -> cerca match numero
+        // ------------------------------------------------------------------
+        var detectedSetId: String? = nil
+        var detectedLocalId: String? = nil
+        var detectedTotalCards: String? = nil
         var candidateSetIds: [String] = []
         var detectedLanguage = "IT"
         
@@ -155,53 +158,11 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             detectedLanguage = String(allJoined[langMatch]).uppercased()
         }
         
-        let bottomLeftElements = sortedDesc.filter { $0.x <= 0.48 && $0.y <= 0.40 }
+        let bottomElements = sortedDesc.filter { $0.y <= 0.40 }
+        let bottomLeftElements = bottomElements.filter { $0.x <= 0.50 }
         let bottomLeftJoined = bottomLeftElements.map { $0.text }.joined(separator: " ")
         
-        // A1. Cerca codice tra parentesi nel riquadro in basso a sinistra (es. "[SVI]", "[SCR]", "[ME02.5]")
-        let bracketPattern = #"\[\s*([A-Za-z0-9.]{2,7})\s*\]"#
-        if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
-            let ns = bottomLeftJoined as NSString
-            let matches = regex.matches(in: bottomLeftJoined, range: NSRange(location: 0, length: ns.length))
-            for m in matches {
-                let code = ns.substring(with: m.range(at: 1))
-                if let setInfo = SetCatalog.shared.findSetByCode(code) {
-                    detectedSetId = setInfo.id
-                    break
-                }
-            }
-        }
-        
-        // A2. Cerca token alfanumerici corrispondenti a sigle note nel riquadro in basso a sinistra (es. "SVI", "ASC", "SCR", "SSP")
-        if detectedSetId == nil {
-            for item in bottomLeftElements {
-                let words = item.text.components(separatedBy: CharacterSet.alphanumerics.inverted)
-                for w in words where w.count >= 2 && w.count <= 6 {
-                    if let setInfo = SetCatalog.shared.findSetByCode(w) {
-                        detectedSetId = setInfo.id
-                        break
-                    }
-                }
-                if detectedSetId != nil { break }
-            }
-        }
-        
-        // A3. Fallback: cerca codice tra parentesi in tutta la carta
-        if detectedSetId == nil {
-            if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
-                let ns = allJoined as NSString
-                let matches = regex.matches(in: allJoined, range: NSRange(location: 0, length: ns.length))
-                for m in matches {
-                    let code = ns.substring(with: m.range(at: 1))
-                    if let setInfo = SetCatalog.shared.findSetByCode(code) {
-                        detectedSetId = setInfo.id
-                        break
-                    }
-                }
-            }
-        }
-        
-        // 3. ESTRAZIONE CARTE PROMO & FRAZIONE NUMERO / TOTALE
+        // 0. VERIFICA PROMO SPECIALI (SVP, SWSHP, SMP, XYP, BWP, DPP)
         let promoPattern = #"(?i)\b(SVP|SWSHP|SWSH|SMP|SM|XYP|XY|BWP|DPP)\s*(?:EN|IT)?\s*#?([A-Za-z0-9]{1,4})\b"#
         if let regex = try? NSRegularExpression(pattern: promoPattern) {
             let ns = allJoined as NSString
@@ -220,35 +181,114 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        // Cerca frazione numerica (es: "123/217", "045/149", "TG05/TG30", "GG12/GG70")
-        if detectedLocalId == nil {
-            let fracPattern = #"(?i)\b([A-Za-z]{0,2}\d{1,3})\s*/\s*(\d{1,3}|[A-Za-z]{0,2}\d{1,3})\b"#
-            if let regex = try? NSRegularExpression(pattern: fracPattern) {
-                let ns = allJoined as NSString
-                if let m = regex.firstMatch(in: allJoined, range: NSRange(location: 0, length: ns.length)) {
-                    let num = ns.substring(with: m.range(at: 1))
-                    let total = ns.substring(with: m.range(at: 2))
-                    
-                    detectedLocalId = num
-                    detectedTotalCards = total
-                    
-                    // 4. ERA PRE-SCARLATTO & VIOLETTO (Spada & Scudo, Sole & Luna, XY, ecc.)
-                    //    Se non abbiamo rilevato un codice set moderno in basso a sinistra:
-                    if detectedSetId == nil {
+        if detectedSetId == nil {
+            // STEP A: VERIFICA SE LA PARTE SINISTRA HA UNA SIGLA (Scarlatto e Violetto / MegaEvoluzioni)
+            let bracketPattern = #"\[\s*([A-Za-z0-9.]{2,7})\s*\]"#
+            
+            // 1. Cerca codice tra parentesi nel riquadro in basso a sinistra (es. "[SVI]", "[ASC]", "[ME02.5]", "[SCR]")
+            if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
+                let ns = bottomLeftJoined as NSString
+                let matches = regex.matches(in: bottomLeftJoined, range: NSRange(location: 0, length: ns.length))
+                for m in matches {
+                    let code = ns.substring(with: m.range(at: 1))
+                    if let setInfo = SetCatalog.shared.findSetByCode(code) {
+                        detectedSetId = setInfo.id
+                        break
+                    }
+                }
+            }
+            
+            // 2. Cerca token alfanumerici corrispondenti a sigle note nella parte sinistra (es. "SVI", "ASC", "SCR", "SSP")
+            if detectedSetId == nil {
+                for item in bottomLeftElements {
+                    let words = item.text.components(separatedBy: CharacterSet.alphanumerics.inverted)
+                    for w in words where w.count >= 2 && w.count <= 6 {
+                        if let setInfo = SetCatalog.shared.findSetByCode(w) {
+                            detectedSetId = setInfo.id
+                            break
+                        }
+                    }
+                    if detectedSetId != nil { break }
+                }
+            }
+            
+            // 3. Fallback parentesi [SIGLA] in tutta la carta
+            if detectedSetId == nil {
+                if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
+                    let ns = allJoined as NSString
+                    let matches = regex.matches(in: allJoined, range: NSRange(location: 0, length: ns.length))
+                    for m in matches {
+                        let code = ns.substring(with: m.range(at: 1))
+                        if let setInfo = SetCatalog.shared.findSetByCode(code) {
+                            detectedSetId = setInfo.id
+                            break
+                        }
+                    }
+                }
+            }
+            
+            // -------------------------------------------------------------
+            // RAMO 1: PARTE SINISTRA HA SIGLA -> CERCA MATCH NUMERO DI QUELLA ESPANSIONE
+            // -------------------------------------------------------------
+            if detectedSetId != nil {
+                // Cerca frazione (es: "056/217", "056/165", "045/091")
+                let fracPattern = #"(?i)\b([A-Za-z]{0,2}\d{1,3})\s*/\s*(\d{1,3})\b"#
+                if let regex = try? NSRegularExpression(pattern: fracPattern) {
+                    let ns = allJoined as NSString
+                    if let m = regex.firstMatch(in: allJoined, range: NSRange(location: 0, length: ns.length)) {
+                        detectedLocalId = ns.substring(with: m.range(at: 1))
+                        detectedTotalCards = ns.substring(with: m.range(at: 2))
+                    }
+                }
+                
+                // Se non c'è frazione, cerca numero isolato negli elementi inferiori
+                if detectedLocalId == nil {
+                    for item in bottomElements where item.y <= 0.28 {
+                        let words = item.text.components(separatedBy: CharacterSet.alphanumerics.inverted)
+                        for w in words where w.count >= 1 && w.count <= 3 && w.allSatisfy({ $0.isNumber }) {
+                            detectedLocalId = w
+                            break
+                        }
+                        if detectedLocalId != nil { break }
+                    }
+                }
+            }
+            // -------------------------------------------------------------
+            // RAMO 2: PARTE SINISTRA HA SIMBOLINO (Spada & Scudo, Sole & Luna, Pre-SV)
+            // -------------------------------------------------------------
+            else {
+                // Cerca frazione numerica (es: "056/196", "123/202", "045/149", "TG05/TG30")
+                let fracPattern = #"(?i)\b([A-Za-z]{0,2}\d{1,3})\s*/\s*(\d{1,3}|[A-Za-z]{0,2}\d{1,3})\b"#
+                if let regex = try? NSRegularExpression(pattern: fracPattern) {
+                    let ns = allJoined as NSString
+                    if let m = regex.firstMatch(in: allJoined, range: NSRange(location: 0, length: ns.length)) {
+                        let num = ns.substring(with: m.range(at: 1))
+                        let total = ns.substring(with: m.range(at: 2))
+                        
                         let candidates = SetCatalog.shared.findSetsByDenominator(total)
                         candidateSetIds = candidates.map { $0.id }
                         
                         if candidates.count == 1 {
+                            // C'è un solo set con questo denominatore totale
                             detectedSetId = candidates[0].id
+                            detectedLocalId = num
+                            detectedTotalCards = total
                         } else if candidates.count > 1 {
-                            // MATCHING VISIVO MIRATO SUI SIMBOLI DEI CANDIDATI
-                            let rightRect = CGRect(x: 0.68, y: 0.02, width: 0.28, height: 0.18)
-                            let leftRect = CGRect(x: 0.04, y: 0.02, width: 0.28, height: 0.18)
+                            // Multipli set candidati: CERCA MATCH LOGO DELL'ESPANSIONE
+                            let leftRect = CGRect(x: 0.03, y: 0.02, width: 0.28, height: 0.18) // Logo a sinistra (Spada e Scudo)
+                            let rightRect = CGRect(x: 0.68, y: 0.02, width: 0.28, height: 0.18) // Logo a destra (Sole e Luna / XY)
                             
                             var matchedCandidate: String? = nil
-                            var bestDistance: Float = 0.88 // Soglia per accettare somiglianza
+                            var bestDistance: Float = 0.88 // Soglia per accettare similarità visiva
                             
-                            // Test zona destra (tipica di Sole & Luna / XY)
+                            // Test logo a sinistra (Spada e Scudo)
+                            if let leftCG = cropPixelBuffer(pixelBuffer, normalizedRect: leftRect),
+                               let resLeft = SetCatalog.shared.matchBestCandidateSymbol(from: leftCG, among: candidateSetIds),
+                               resLeft.distance < bestDistance {
+                                matchedCandidate = resLeft.bestSetId
+                                bestDistance = resLeft.distance
+                            }
+                            // Test logo a destra (Sole e Luna / XY)
                             if let rightCG = cropPixelBuffer(pixelBuffer, normalizedRect: rightRect),
                                let resRight = SetCatalog.shared.matchBestCandidateSymbol(from: rightCG, among: candidateSetIds),
                                resRight.distance < bestDistance {
@@ -256,16 +296,10 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                                 bestDistance = resRight.distance
                             }
                             
-                            // Test zona sinistra (tipica di Spada & Scudo)
-                            if let leftCG = cropPixelBuffer(pixelBuffer, normalizedRect: leftRect),
-                               let resLeft = SetCatalog.shared.matchBestCandidateSymbol(from: leftCG, among: candidateSetIds),
-                               resLeft.distance < bestDistance {
-                                matchedCandidate = resLeft.bestSetId
-                                bestDistance = resLeft.distance
-                            }
-                            
                             if let matched = matchedCandidate {
                                 detectedSetId = matched
+                                detectedLocalId = num
+                                detectedTotalCards = total
                             }
                         }
                     }
@@ -273,7 +307,15 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             }
         }
         
-        guard let rawLocalId = detectedLocalId else {
+        // ------------------------------------------------------------------
+        // GATE DI SICUREZZA FONDAMENTALE:
+        // La scansione procede SOLO ED ESCLUSIVAMENTE se:
+        // 1) L'espansione è stata identificata con certezza (detectedSetId != nil)
+        // 2) Il numero della carta per quell'espansione è stato trovato (detectedLocalId != nil).
+        // Se manca l'espansione, IGNORA IL FRAME: evita che determinati numeri
+        // vengano scambiati o confusi tra più carte diverse.
+        // ------------------------------------------------------------------
+        guard let setId = detectedSetId, let rawLocalId = detectedLocalId else {
             consecutiveEmptyFrames += 1
             // Se per almeno 3 frame consecutivi (~0.6-0.8s) non viene inquadrata alcuna carta:
             if consecutiveEmptyFrames >= 3 {
@@ -292,7 +334,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             return
         }
         
-        // Carta rilevata nel frame corrente: azzera i frame vuoti
+        // Carta rilevata nel frame corrente con Set e Numero confermati: azzera frame vuoti
         consecutiveEmptyFrames = 0
         let localId = normalizeLocalId(rawLocalId)
         
@@ -300,7 +342,8 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         // CASO 1: SISTEMA IN BLOCCO POST-SALVATAGGIO (Anti-Duplicati)
         // ------------------------------------------------------------------
         if isWaitingForNewCard, let committedLocalId = lastCommittedLocalId {
-            if isMatchingLocalId(localId, committedLocalId) {
+            let isSameCard = isMatchingLocalId(localId, committedLocalId) && (lastCommittedSetId == nil || lastCommittedSetId == setId)
+            if isSameCard {
                 // La fotocamera sta ANCORA inquadrando la stessa carta: blocca e ignora!
                 newCardCandidateLocalId = nil
                 newCardStabilityCount = 0
@@ -335,7 +378,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             // Se la fotocamera sta ancora inquadrando la carta attiva, perfeziona i dettagli in-place (es. nome/set più nitido)
             if let activeId = activeTrackingLocalId, isMatchingLocalId(localId, activeId) {
                 refineActiveCardIfNeeded(
-                    detectedSetId: detectedSetId,
+                    detectedSetId: setId,
                     detectedPokemonName: detectedPokemonName,
                     totalCards: detectedTotalCards,
                     candidateSetIds: candidateSetIds,
@@ -350,7 +393,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         // ------------------------------------------------------------------
         // CASO 3: NUOVA CARTA DA AGGANCIARE (Richiede stabilità di 2 frame)
         // ------------------------------------------------------------------
-        let cardKey = "\(detectedSetId ?? "unk")_\(localId)"
+        let cardKey = "\(setId)_\(localId)"
         if lastDetectedKey == cardKey {
             frameStabilityCount += 1
         } else {
@@ -363,12 +406,12 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         
         // Nuova carta stabilizzata: imposta il tracking
         activeTrackingLocalId = localId
-        activeTrackingSetId = detectedSetId
+        activeTrackingSetId = setId
         
         DispatchQueue.main.async { [weak self] in
             self?.handleDetectedCard(
                 pokemonName: detectedPokemonName,
-                setId: detectedSetId,
+                setId: setId,
                 localId: localId,
                 totalCards: detectedTotalCards,
                 candidateSetIds: candidateSetIds,
@@ -446,7 +489,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     
     private func handleDetectedCard(
         pokemonName: String?,
-        setId: String?,
+        setId: String,
         localId: String,
         totalCards: String?,
         candidateSetIds: [String] = [],
@@ -460,16 +503,15 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         generator.impactOccurred()
         
         let initialName = pokemonName?.capitalized ?? "Carta \(localId)"
-        let initialSetId = setId ?? candidateSetIds.first ?? "sv01"
-        let setInfo = SetCatalog.shared.sets[initialSetId]
-        let setName = setInfo?.localizedName(language: language) ?? initialSetId.uppercased()
-        let symbolData = SetCatalog.shared.getSymbolData(for: initialSetId)
+        let setInfo = SetCatalog.shared.sets[setId]
+        let setName = setInfo?.localizedName(language: language) ?? setId.uppercased()
+        let symbolData = SetCatalog.shared.getSymbolData(for: setId)
         
-        // Carta temporanea mostrata all'istante nel banner (attende conferma utente)
+        // Carta temporanea creata univocamente per il set identificato
         let tempCard = PokemonCard(
             name: initialName,
             localId: localId,
-            setId: initialSetId,
+            setId: setId,
             setName: setName,
             totalCards: totalCards,
             rarity: "Comune",

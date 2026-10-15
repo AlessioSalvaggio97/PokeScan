@@ -54,25 +54,32 @@ public class SetCatalog: ObservableObject {
             self.abbreviations = decoded.abbreviations
             self.denominatorIndex = decoded.denominator_index
             
-            // Inietta alias standard a 3 lettere per Scarlatto & Violetto e MegaEvoluzioni
+            // Inietta alias standard per Scarlatto & Violetto e MegaEvoluzioni
             let modernAliases: [String: String] = [
-                "ASC": "me02.5",     // Ascesa Eroica
-                "SVI": "sv01",       // Scarlatto e Violetto Base
-                "PAL": "sv02",       // Evoluzioni a Paldea
-                "OBF": "sv03",       // Ossidiana Infuocata
-                "MEW": "sv03.5",     // 151
-                "PAR": "sv04",       // Paradosso Temporale
-                "PAF": "sv04.5",     // Destino di Paldea
-                "TEF": "sv05",       // Cronoforze
-                "TWM": "sv06",       // Crepuscolo Mascherato
-                "SFA": "sv06.5",     // Segreto Fiabesco
-                "SCR": "sv07",       // Corona Astrale
-                "SSP": "sv08",       // Scintille Folgoranti
-                "PRE": "sv08.5",     // Evoluzioni Prismatiche
-                "ME01": "me01",      // MegaEvoluzioni 1
-                "ME1": "me01",
-                "ME02.5": "me02.5",
-                "ME2.5": "me02.5"
+                // Scarlatto & Violetto
+                "SVI": "sv01", "SV01": "sv01", "SV1": "sv01",
+                "PAL": "sv02", "SV02": "sv02", "SV2": "sv02",
+                "OBF": "sv03", "SV03": "sv03", "SV3": "sv03",
+                "MEW": "sv03.5", "SV03.5": "sv03.5", "SV3.5": "sv03.5", "151": "sv03.5",
+                "PAR": "sv04", "SV04": "sv04", "SV4": "sv04",
+                "PAF": "sv04.5", "SV04.5": "sv04.5", "SV4.5": "sv04.5",
+                "TEF": "sv05", "SV05": "sv05", "SV5": "sv05",
+                "TWM": "sv06", "SV06": "sv06", "SV6": "sv06",
+                "SFA": "sv06.5", "SV06.5": "sv06.5", "SV6.5": "sv06.5",
+                "SCR": "sv07", "SV07": "sv07", "SV7": "sv07",
+                "SSP": "sv08", "SV08": "sv08", "SV8": "sv08",
+                "PRE": "sv08.5", "SV08.5": "sv08.5", "SV8.5": "sv08.5",
+                "SV09": "sv09", "SV9": "sv09",
+                "SV10": "sv10", "SV10.5": "sv10.5b",
+                // Mega Evoluzioni
+                "ASC": "me02.5", "ME02.5": "me02.5", "ME2.5": "me02.5",
+                "ME01": "me01", "ME1": "me01",
+                "ME02": "me02", "ME2": "me02",
+                "ME03": "me03", "ME3": "me03",
+                "ME04": "me04", "ME4": "me04",
+                "ME05": "me05", "ME5": "me05",
+                // Promo
+                "SVP": "svp", "SWSHP": "swshp", "SMP": "smp", "XYP": "xyp", "BWP": "bwp", "DPP": "dpp"
             ]
             for (alias, setId) in modernAliases {
                 if self.abbreviations[alias] == nil {
@@ -88,7 +95,13 @@ public class SetCatalog: ObservableObject {
     
     /// Trova il set dato il codice abbreviazione letto (es. "SVI", "PAL", "SCR", "SSP")
     public func findSetByCode(_ code: String) -> SetInfo? {
-        let cleaned = code.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        var cleaned = code.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        cleaned = cleaned.replacingOccurrences(of: "[", with: "")
+                         .replacingOccurrences(of: "]", with: "")
+                         .replacingOccurrences(of: "(", with: "")
+                         .replacingOccurrences(of: ")", with: "")
+                         .trimmingCharacters(in: .whitespacesAndNewlines)
+        
         if let setId = abbreviations[cleaned], let setInfo = sets[setId] {
             return setInfo
         }
@@ -101,10 +114,14 @@ public class SetCatalog: ObservableObject {
         return nil
     }
     
-    /// Trova i set candidati dato il denominatore/totale delle carte (es. 149 per Sole e Luna)
+    /// Trova i set candidati dato il denominatore/totale delle carte (es. 149 per Sole e Luna, 091 -> 91)
     public func findSetsByDenominator(_ denominator: String) -> [SetInfo] {
         let key = denominator.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let setIds = denominatorIndex[key] else { return [] }
+        var setIds = denominatorIndex[key] ?? []
+        // Se non trova corrispondenza (es. "091"), prova convertendo ad intero e poi stringa ("91")
+        if setIds.isEmpty, let intVal = Int(key) {
+            setIds = denominatorIndex["\(intVal)"] ?? []
+        }
         return setIds.compactMap { sets[$0] }
     }
     

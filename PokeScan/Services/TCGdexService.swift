@@ -49,18 +49,13 @@ public class TCGdexService {
         let cleanLocalId = localId.trimmingCharacters(in: .whitespacesAndNewlines)
         let lang = language.lowercased()
         
-        // 1. TENTATIVO CON SET ID SPECIFICO
+        // 1. TENTATIVO CON SET ID SPECIFICO (Lookup Diretto e Univoco)
         if let sId = setId, !sId.isEmpty {
-            let res = await fetchCardDirect(setId: sId, localId: cleanLocalId, language: lang)
-            if let pName = pokemonName, !pName.isEmpty {
-                let recognizedClean = pName.lowercased().trimmingCharacters(in: .whitespaces)
-                let returnedClean = res.name.lowercased()
-                if returnedClean.contains(recognizedClean) || recognizedClean.contains(returnedClean) {
-                    let setInfo = SetCatalog.shared.sets[sId]
-                    let sName = setInfo?.localizedName(language: language) ?? res.setName ?? sId.uppercased()
-                    return (sId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
-                }
-            } else if res.found {
+            var res = await fetchCardDirect(setId: sId, localId: cleanLocalId, language: lang)
+            if !res.found && lang != "en" {
+                res = await fetchCardDirect(setId: sId, localId: cleanLocalId, language: "en")
+            }
+            if res.found {
                 let setInfo = SetCatalog.shared.sets[sId]
                 let sName = setInfo?.localizedName(language: language) ?? res.setName ?? sId.uppercased()
                 return (sId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
@@ -161,8 +156,14 @@ public class TCGdexService {
     public func fetchCardDirect(setId: String, localId: String, language: String = "it") async -> (found: Bool, name: String, setName: String?, rarity: String, imageURL: String?, thumbnailData: Data?) {
         let cleanLocalId = localId.trimmingCharacters(in: .whitespacesAndNewlines)
         let cleanSetId = setId.trimmingCharacters(in: .whitespacesAndNewlines)
-        let paddedId = String(format: "%03d", Int(cleanLocalId) ?? 0)
-        let candidates = [cleanLocalId, paddedId]
+        
+        var candidates = [cleanLocalId]
+        if let intVal = Int(cleanLocalId) {
+            let unpadded = "\(intVal)"
+            let padded = String(format: "%03d", intVal)
+            if !candidates.contains(unpadded) { candidates.append(unpadded) }
+            if !candidates.contains(padded) { candidates.append(padded) }
+        }
         
         for cand in candidates {
             let urlString = "https://api.tcgdex.net/v2/\(language)/sets/\(cleanSetId)/\(cand)"
