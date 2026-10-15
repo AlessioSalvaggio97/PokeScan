@@ -321,7 +321,7 @@
 		DC29A63624CC54BE2F186FA7 /* ex9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex9.png; sourceTree = "<group>"; };
 		DD3CCB955BBF012A5390D17F /* sv09.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sv09.png; sourceTree = "<group>"; };
 		DDE9355A4718C9D42A00E0BD /* pop9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop9.png; sourceTree = "<group>"; };
-		E237DF5FB908D64053B68C6B /* PokeScan.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PokeScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E237DF5FB908D64053B68C6B /* PokeScan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokeScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E499FD53914DFC888FAA5BBD /* sets_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sets_catalog.json; sourceTree = "<group>"; };
 		E55AD5BAE8CC28A346641B4C /* bw1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bw1.png; sourceTree = "<group>"; };
 		E582B575B880055A3D661C79 /* ex5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex5.png; sourceTree = "<group>"; };
@@ -641,7 +641,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					F0E0ED1421552150B8177AA4 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -858,6 +857,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = VQM3P885N7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "PokéScan necessita della fotocamera per scansionare e riconoscere le carte Pokémon.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1005,6 +1005,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = VQM3P885N7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "PokéScan necessita della fotocamera per scansionare e riconoscere le carte Pokémon.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

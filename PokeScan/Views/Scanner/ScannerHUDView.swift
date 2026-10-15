@@ -66,8 +66,11 @@ public struct ScannerHUDView: View {
                     .frame(width: reticleWidth, height: reticleHeight)
                     .neonGlow(color: (isTargetLocked || isWaitingForNewCard) ? PokeTheme.neonGreen : PokeTheme.neonYellow, radius: 8)
                 
-                // Linea Laser Animata
-                laserBeamView
+                // Linea Laser Animata (in pausa quando la carta è agganciata)
+                if !isTargetLocked {
+                    laserBeamView
+                        .transition(.opacity)
+                }
                 
                 // Mirino centrale di puntamento
                 centerCrosshair

@@ -27,13 +27,17 @@ public class TCGdexService {
     
     private let session: URLSession
     private var memoryCache: [String: TCGdexCardResponse] = [:]
-    private var imageCache: [String: Data] = [:]
+    private let imageCache = NSCache<NSString, NSData>()
     
     private init() {
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 6
         config.timeoutIntervalForResource = 12
         self.session = URLSession(configuration: config)
+        
+        // Configura limiti di sicurezza per la RAM: max 150 immagini o 40 MB
+        self.imageCache.countLimit = 150
+        self.imageCache.totalCostLimit = 40 * 1024 * 1024
     }
     
     /// Risolve in modo intelligente la carta incrociando Nome Pokémon, Set e Numero (con supporto per Full Art e Promo)
@@ -56,19 +60,41 @@ public class TCGdexService {
                 res = await fetchCardDirect(setId: sId, localId: cleanLocalId, language: "en")
             }
             if res.found {
-                let setInfo = SetCatalog.shared.sets[sId]
-                let sName = setInfo?.localizedName(language: language) ?? res.setName ?? sId.uppercased()
-                return (sId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
+                // Se ci sono molteplici set candidati e un nome Pokémon rilevato,
+                // verifica che il nome della carta corrisponda per evitare scambi di set (es. Sneasler vs Gastly)
+                if !candidateSetIds.isEmpty, let pName = pokemonName, !pName.isEmpty {
+                    let recognizedClean = pName.lowercased().trimmingCharacters(in: .whitespaces)
+                    let returnedClean = res.name.lowercased()
+                    if returnedClean.contains(recognizedClean) || recognizedClean.contains(returnedClean) {
+                        let setInfo = SetCatalog.shared.sets[sId]
+                        let sName = setInfo?.localizedName(language: language) ?? res.setName ?? sId.uppercased()
+                        return (sId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
+                    }
+                    // Se il nome non combacia e ci sono altri candidati, prosegue la verifica su candidateSetIds in 1B
+                } else {
+                    let setInfo = SetCatalog.shared.sets[sId]
+                    let sName = setInfo?.localizedName(language: language) ?? res.setName ?? sId.uppercased()
+                    return (sId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
+                }
             }
         }
         
         // 1B. VERIFICA DEI SET CANDIDATI (Se condividono lo stesso totale carte, es. 217 -> me02.5 vs swsh11)
         for candId in candidateSetIds where candId != setId {
-            let res = await fetchCardDirect(setId: candId, localId: cleanLocalId, language: lang)
-            if let pName = pokemonName, !pName.isEmpty {
-                let recognizedClean = pName.lowercased().trimmingCharacters(in: .whitespaces)
-                let returnedClean = res.name.lowercased()
-                if returnedClean.contains(recognizedClean) || recognizedClean.contains(returnedClean) {
+            var res = await fetchCardDirect(setId: candId, localId: cleanLocalId, language: lang)
+            if !res.found && lang != "en" {
+                res = await fetchCardDirect(setId: candId, localId: cleanLocalId, language: "en")
+            }
+            if res.found {
+                if let pName = pokemonName, !pName.isEmpty {
+                    let recognizedClean = pName.lowercased().trimmingCharacters(in: .whitespaces)
+                    let returnedClean = res.name.lowercased()
+                    if returnedClean.contains(recognizedClean) || recognizedClean.contains(returnedClean) {
+                        let setInfo = SetCatalog.shared.sets[candId]
+                        let sName = setInfo?.localizedName(language: language) ?? res.setName ?? candId.uppercased()
+                        return (candId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
+                    }
+                } else {
                     let setInfo = SetCatalog.shared.sets[candId]
                     let sName = setInfo?.localizedName(language: language) ?? res.setName ?? candId.uppercased()
                     return (candId, sName, cleanLocalId, res.name, res.rarity, res.imageURL, res.thumbnailData)
@@ -191,8 +217,9 @@ public class TCGdexService {
     
     /// Scarica e converte la miniatura in PNG data
     public func downloadThumbnail(baseURL: String) async -> Data? {
-        if let cached = imageCache[baseURL] {
-            return cached
+        let key = baseURL as NSString
+        if let cached = imageCache.object(forKey: key) {
+            return cached as Data
         }
         let candidates = ["\(baseURL)/low.webp", "\(baseURL)/low.png", "\(baseURL)/high.webp"]
         for cand in candidates {
@@ -203,7 +230,7 @@ public class TCGdexService {
                 let (data, response) = try await session.data(for: request)
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                     if let uiImage = UIImage(data: data), let pngData = uiImage.pngData() {
-                        imageCache[baseURL] = pngData
+                        imageCache.setObject(pngData as NSData, forKey: key, cost: pngData.count)
                         return pngData
                     }
                 }

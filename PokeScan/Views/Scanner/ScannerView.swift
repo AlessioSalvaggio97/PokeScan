@@ -8,6 +8,7 @@ public struct ScannerView: View {
     @State private var showCollectionPicker = false
     @State private var showSaveToast = false
     @State private var toastMessage = ""
+    @Environment(\.scenePhase) private var scenePhase
     
     public var onFinishScanning: (() -> Void)?
     
@@ -87,6 +88,16 @@ public struct ScannerView: View {
         }
         .onDisappear {
             cameraManager.stopSession()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            switch newPhase {
+            case .active:
+                cameraManager.startSession()
+            case .inactive, .background:
+                cameraManager.stopSession()
+            @unknown default:
+                break
+            }
         }
         .onReceive(recognitionService.$lastCommittedCardName) { name in
             guard let name = name else { return }

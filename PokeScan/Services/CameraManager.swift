@@ -77,7 +77,7 @@ public class CameraManager: NSObject, ObservableObject {
                     self.videoDeviceInput = videoInput
                 }
                 
-                // Configura autofocus continuo e autoesposizione
+                // Configura autofocus continuo, autoesposizione e framerate a 30 FPS per massima efficienza batteria
                 try videoDevice.lockForConfiguration()
                 if videoDevice.isFocusModeSupported(.continuousAutoFocus) {
                     videoDevice.focusMode = .continuousAutoFocus
@@ -88,6 +88,9 @@ public class CameraManager: NSObject, ObservableObject {
                 if videoDevice.isAutoFocusRangeRestrictionSupported {
                     videoDevice.autoFocusRangeRestriction = .near // Ottimizzato per carte vicine
                 }
+                // Fissa il sensore a 30 FPS: dimezza il consumo energetico e azzera il surriscaldamento
+                videoDevice.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 30)
+                videoDevice.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 30)
                 videoDevice.unlockForConfiguration()
                 
                 // Configura output video per Apple Vision

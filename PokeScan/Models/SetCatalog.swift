@@ -100,11 +100,28 @@ public class SetCatalog: ObservableObject {
                          .replacingOccurrences(of: "]", with: "")
                          .replacingOccurrences(of: "(", with: "")
                          .replacingOccurrences(of: ")", with: "")
+                         .replacingOccurrences(of: "|", with: "")
                          .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Rimuove eventuale suffisso lingua IT o EN (es: "SVI IT" -> "SVI")
+        if cleaned.hasSuffix(" IT") {
+            cleaned = String(cleaned.dropLast(3)).trimmingCharacters(in: .whitespaces)
+        } else if cleaned.hasSuffix(" EN") {
+            cleaned = String(cleaned.dropLast(3)).trimmingCharacters(in: .whitespaces)
+        }
         
         if let setId = abbreviations[cleaned], let setInfo = sets[setId] {
             return setInfo
         }
+        
+        // Se le parentesi quadre sono state lette come 'I' o '1' all'inizio e alla fine (es. "ISVII" -> "SVI")
+        if cleaned.count >= 4 && (cleaned.hasPrefix("I") || cleaned.hasPrefix("1")) && (cleaned.hasSuffix("I") || cleaned.hasSuffix("1")) {
+            let stripped = String(cleaned.dropFirst().dropLast())
+            if let setId = abbreviations[stripped], let setInfo = sets[setId] {
+                return setInfo
+            }
+        }
+        
         // Tentativo con match diretto case-insensitive
         for (id, set) in sets {
             if id.uppercased() == cleaned {

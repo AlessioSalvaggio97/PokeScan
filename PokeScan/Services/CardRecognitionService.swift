@@ -51,9 +51,18 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         return false
     }
     
+    // Riquadro normalizzato del mirino HUD centrale (coordinate Vision: 0,0 in basso a sinistra)
+    // Corrisponde al rettangolo 260x360 centrato nello schermo, con margine di tolleranza
+    public static let hudRegionOfInterest = CGRect(x: 0.10, y: 0.16, width: 0.80, height: 0.68)
+    
     public func didCaptureFrame(_ sampleBuffer: CMSampleBuffer) {
+        // Se c'è già una carta attiva sul banner in attesa di conferma o scarto,
+        // sospendi l'OCR: elimina al 100% lo sfarfallio e azzera il consumo CPU/NPU!
+        guard currentCard == nil else { return }
+        
         let now = Date().timeIntervalSince1970
-        guard now - lastProcessTime > 0.22, !isBusy else { return }
+        // Throttling: analizza circa 3 frame al secondo (~320ms tra un'analisi e l'altra)
+        guard now - lastProcessTime >= 0.32, !isBusy else { return }
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         
         lastProcessTime = now
@@ -77,7 +86,10 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         }
         
         request.recognitionLevel = .accurate
+        request.recognitionLanguages = ["it-IT", "en-US"]
         request.usesLanguageCorrection = false
+        // Limita l'analisi di Apple Vision esclusivamente all'area della carta nel mirino HUD!
+        request.regionOfInterest = Self.hudRegionOfInterest
         
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: [:])
         try? handler.perform([request])
@@ -104,6 +116,21 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         return ciContext.createCGImage(ciImage, from: pixelRect)
     }
     
+    /// Ritaglia una regione della carta all'interno dell'area del mirino HUD
+    private func cropROIPixelBuffer(
+        _ pixelBuffer: CVPixelBuffer,
+        cardNormalizedRect: CGRect
+    ) -> CGImage? {
+        let roi = Self.hudRegionOfInterest
+        let absRect = CGRect(
+            x: roi.origin.x + cardNormalizedRect.origin.x * roi.width,
+            y: roi.origin.y + cardNormalizedRect.origin.y * roi.height,
+            width: cardNormalizedRect.width * roi.width,
+            height: cardNormalizedRect.height * roi.height
+        )
+        return cropPixelBuffer(pixelBuffer, normalizedRect: absRect)
+    }
+    
     private func analyzeObservations(_ observations: [VNRecognizedTextObservation], pixelBuffer: CVPixelBuffer) {
         guard !observations.isEmpty else { return }
         
@@ -124,17 +151,19 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         
         let sortedDesc = elements.sorted { $0.y > $1.y }
         
-        // 1. RICONOSCIMENTO NOME POKÉMON (In alto, y >= 0.40)
+        // 1. RICONOSCIMENTO NOME POKÉMON (Header superiore della carta nel mirino: y tra 0.65 e 0.98, x tra 0.05 e 0.78)
         var detectedPokemonName: String? = nil
-        let topElements = sortedDesc.filter { $0.y >= 0.40 }
-        for item in topElements {
+        let headerElements = sortedDesc.filter { $0.y >= 0.65 && $0.y <= 0.98 && $0.x >= 0.05 && $0.x <= 0.78 }
+        for item in headerElements {
             if let name = cleanPokemonName(from: item.text), name.count >= 3 {
                 detectedPokemonName = name
                 break
             }
         }
+        // Fallback per inquadrature leggermente più alte o decentrate nel mirino
         if detectedPokemonName == nil {
-            for item in sortedDesc where item.y >= 0.20 {
+            let headerFallback = sortedDesc.filter { $0.y >= 0.50 && $0.y <= 0.98 && $0.x <= 0.78 }
+            for item in headerFallback {
                 if let name = cleanPokemonName(from: item.text), name.count >= 3 {
                     detectedPokemonName = name
                     break
@@ -147,20 +176,28 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         // if (parte_sinistra ha sigla)   -> cerca match sigla espansione -> cerca match numero
         // else (parte sinistra ha logo)  -> cerca match logo espansione  -> cerca match numero
         // ------------------------------------------------------------------
+        let allJoined = sortedDesc.map { $0.text }.joined(separator: " ")
+        // Il fondo della carta è localizzato nel 35% inferiore dell'area del mirino
+        let bottomElements = sortedDesc.filter { $0.y <= 0.35 }
+        let bottomLeftElements = bottomElements.filter { $0.x <= 0.55 }
+        let bottomLeftJoined = bottomLeftElements.map { $0.text }.joined(separator: " ")
+        
         var detectedSetId: String? = nil
         var detectedLocalId: String? = nil
         var detectedTotalCards: String? = nil
         var candidateSetIds: [String] = []
         var detectedLanguage = "IT"
         
-        let allJoined = sortedDesc.map { $0.text }.joined(separator: " ")
-        if let langMatch = allJoined.range(of: #"\b(IT|EN)\b"#, options: .regularExpression) {
-            detectedLanguage = String(allJoined[langMatch]).uppercased()
+        // Verifica esplicita del tag lingua:
+        // Nelle carte italiane compare spesso "IT" vicino alla sigla (es. "[SVI] IT" o "IT 056/198")
+        if let regexIT = try? NSRegularExpression(pattern: #"(?i)\bIT\b"#) {
+            let ns = bottomLeftJoined as NSString
+            if regexIT.firstMatch(in: bottomLeftJoined, range: NSRange(location: 0, length: ns.length)) != nil {
+                detectedLanguage = "IT"
+            } else if let langMatch = allJoined.range(of: #"\b(IT|EN)\b"#, options: .regularExpression) {
+                detectedLanguage = String(allJoined[langMatch]).uppercased()
+            }
         }
-        
-        let bottomElements = sortedDesc.filter { $0.y <= 0.40 }
-        let bottomLeftElements = bottomElements.filter { $0.x <= 0.50 }
-        let bottomLeftJoined = bottomLeftElements.map { $0.text }.joined(separator: " ")
         
         // 0. VERIFICA PROMO SPECIALI (SVP, SWSHP, SMP, XYP, BWP, DPP)
         let promoPattern = #"(?i)\b(SVP|SWSHP|SWSH|SMP|SM|XYP|XY|BWP|DPP)\s*(?:EN|IT)?\s*#?([A-Za-z0-9]{1,4})\b"#
@@ -183,9 +220,11 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         
         if detectedSetId == nil {
             // STEP A: VERIFICA SE LA PARTE SINISTRA HA UNA SIGLA (Scarlatto e Violetto / MegaEvoluzioni)
-            let bracketPattern = #"\[\s*([A-Za-z0-9.]{2,7})\s*\]"#
+            // Supporta sigle pulite, con tag lingua e con caratteri di delimitazione alternativi:
+            // es. "[SVI]", "[SVI IT]", "[SVI] IT", "ISVI I", "|SVI|", "(SVI)", "SVI IT"
+            let bracketPattern = #"(?:\[|\||I|1|\()\s*([A-Za-z0-9.]{2,7})(?:\s+(?:IT|EN))?\s*(?:\]|\||I|1|\))"#
             
-            // 1. Cerca codice tra parentesi nel riquadro in basso a sinistra (es. "[SVI]", "[ASC]", "[ME02.5]", "[SCR]")
+            // 1. Cerca codice con delimitatori nel riquadro in basso a sinistra
             if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
                 let ns = bottomLeftJoined as NSString
                 let matches = regex.matches(in: bottomLeftJoined, range: NSRange(location: 0, length: ns.length))
@@ -201,8 +240,12 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             // 2. Cerca token alfanumerici corrispondenti a sigle note nella parte sinistra (es. "SVI", "ASC", "SCR", "SSP")
             if detectedSetId == nil {
                 for item in bottomLeftElements {
+                    if let setInfo = SetCatalog.shared.findSetByCode(item.text) {
+                        detectedSetId = setInfo.id
+                        break
+                    }
                     let words = item.text.components(separatedBy: CharacterSet.alphanumerics.inverted)
-                    for w in words where w.count >= 2 && w.count <= 6 {
+                    for w in words where w.count >= 2 && w.count <= 7 {
                         if let setInfo = SetCatalog.shared.findSetByCode(w) {
                             detectedSetId = setInfo.id
                             break
@@ -212,7 +255,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                 }
             }
             
-            // 3. Fallback parentesi [SIGLA] in tutta la carta
+            // 3. Fallback delimitatori in tutta la carta
             if detectedSetId == nil {
                 if let regex = try? NSRegularExpression(pattern: bracketPattern, options: .caseInsensitive) {
                     let ns = allJoined as NSString
@@ -282,14 +325,14 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                             var bestDistance: Float = 0.88 // Soglia per accettare similarità visiva
                             
                             // Test logo a sinistra (Spada e Scudo)
-                            if let leftCG = cropPixelBuffer(pixelBuffer, normalizedRect: leftRect),
+                            if let leftCG = cropROIPixelBuffer(pixelBuffer, cardNormalizedRect: leftRect),
                                let resLeft = SetCatalog.shared.matchBestCandidateSymbol(from: leftCG, among: candidateSetIds),
                                resLeft.distance < bestDistance {
                                 matchedCandidate = resLeft.bestSetId
                                 bestDistance = resLeft.distance
                             }
                             // Test logo a destra (Sole e Luna / XY)
-                            if let rightCG = cropPixelBuffer(pixelBuffer, normalizedRect: rightRect),
+                            if let rightCG = cropROIPixelBuffer(pixelBuffer, cardNormalizedRect: rightRect),
                                let resRight = SetCatalog.shared.matchBestCandidateSymbol(from: rightCG, among: candidateSetIds),
                                resRight.distance < bestDistance {
                                 matchedCandidate = resRight.bestSetId
@@ -298,6 +341,13 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                             
                             if let matched = matchedCandidate {
                                 detectedSetId = matched
+                                detectedLocalId = num
+                                detectedTotalCards = total
+                            } else if let pName = detectedPokemonName, !pName.isEmpty, !candidates.isEmpty {
+                                // Se il template matching visivo del simbolo è indeciso (rumore fotocamera/illuminazione),
+                                // non scartare il frame: imposta il primo set come provvisorio e conserva candidateSetIds.
+                                // TCGdexService.resolveCard userà il nome Pokémon e il numero carta per identificare l'espansione!
+                                detectedSetId = candidates[0].id
                                 detectedLocalId = num
                                 detectedTotalCards = total
                             }
@@ -375,18 +425,8 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         // CASO 2: CARTA GIÀ INQUADRATA SUL BANNER (In attesa di conferma utente)
         // ------------------------------------------------------------------
         if currentCard != nil {
-            // Se la fotocamera sta ancora inquadrando la carta attiva, perfeziona i dettagli in-place (es. nome/set più nitido)
-            if let activeId = activeTrackingLocalId, isMatchingLocalId(localId, activeId) {
-                refineActiveCardIfNeeded(
-                    detectedSetId: setId,
-                    detectedPokemonName: detectedPokemonName,
-                    totalCards: detectedTotalCards,
-                    candidateSetIds: candidateSetIds,
-                    language: detectedLanguage
-                )
-            }
             // Attende la conferma manuale dell'utente (tramite pulsante "Conferma" o "Scarta").
-            // Ignora qualsiasi altra carta nel mirino finché l'utente non conferma o scarta.
+            // Nessuna fluttuazione della fotocamera è autorizzata a modificare o sfarfallare la carta attiva!
             return
         }
         
@@ -449,7 +489,9 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
                 changed = true
             }
             
-            if let newName = detectedPokemonName?.capitalized, card.name.hasPrefix("Carta ") || (card.name != newName && !newName.isEmpty) {
+            // Aggiorna il nome provvisorio SOLO se non è ancora stato risolto ufficialmente da TCGdex
+            let isUnresolved = card.name.hasPrefix("Carta ") || card.imageURL == nil
+            if isUnresolved, let newName = detectedPokemonName?.capitalized, !newName.isEmpty, card.name != newName {
                 card.name = newName
                 changed = true
             }
@@ -604,20 +646,34 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     /// Pulisce il testo della riga in alto per isolare il solo nome del Pokémon
     private func cleanPokemonName(from line: String) -> String? {
         var str = line
-        // Rimuove HP/PS e numeri di salute (es: "HP 70", "PS 120", "150 HP")
+        // Rimuove HP/PS/PV e numeri di salute (es: "HP 70", "PS 120", "150 HP", "PV 100", "70 PV")
         str = str.replacingOccurrences(of: #"(?i)\b(HP|PS|PV)\s*\d{2,3}\b"#, with: "", options: .regularExpression)
         str = str.replacingOccurrences(of: #"(?i)\b\d{2,3}\s*(HP|PS|PV)\b"#, with: "", options: .regularExpression)
-        // Rimuove parole di stadio e prefissi comuni
-        str = str.replacingOccurrences(of: #"(?i)\b(STAGE\s*\d|FASE\s*\d|BASE|POKEMON|POKÉMON|LV\.\d+|LIVELLO\s*\d+)\b"#, with: "", options: .regularExpression)
-        str = str.replacingOccurrences(of: #"[^\w\s-]"#, with: "", options: .regularExpression)
+        
+        // Rimuove parole di stadio e termini di gioco (sia inglesi che italiani)
+        let terms = [
+            "BASIC", "BASE", "STAGE\\s*\\d", "FASE\\s*\\d", "POKEMON", "POKÉMON",
+            "LV\\.\\d+", "LIVELLO\\s*\\d+", "VMAX", "VSTAR", "V-UNION", "TERA", "EX", "GX",
+            "STRUMENTO", "AIUTO", "STADIO", "OGGETTO POKÉMON", "TRAINER", "ITEM", "SUPPORTER",
+            "STADIUM", "ENERGIA", "ENERGY", "EVOLUZIONE", "EVOLUTION"
+        ]
+        let pattern = "(?i)\\b(" + terms.joined(separator: "|") + ")\\b"
+        str = str.replacingOccurrences(of: pattern, with: "", options: .regularExpression)
+        
+        // Preserva tutte le lettere Unicode (inclusi accenti come é, è, à, etc.)
+        str = str.replacingOccurrences(of: #"[^\p{L}\s-]"#, with: "", options: .regularExpression)
         
         let words = str.split(separator: " ").filter { word in
             let w = String(word).trimmingCharacters(in: .whitespaces)
             return w.count >= 3 && !w.allSatisfy({ $0.isNumber })
         }
         
-        if let firstWord = words.first {
-            return String(firstWord)
+        if !words.isEmpty {
+            // Supporta nomi composti fino a 2 parole (es: "Roaring Moon", "Tapu Koko", "Iron Valiant", "Team Rocket")
+            if words.count >= 2 && words[0].count >= 3 && words[1].count >= 3 {
+                return "\(words[0]) \(words[1])"
+            }
+            return String(words[0])
         }
         return nil
     }
