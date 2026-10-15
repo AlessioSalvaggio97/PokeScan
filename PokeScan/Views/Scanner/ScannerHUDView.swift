@@ -84,7 +84,7 @@ public struct ScannerHUDView: View {
                     .frame(width: 8, height: 8)
                     .neonGlow(color: badgeColor, radius: 6)
                 
-                Text(isWaitingForNewCard ? "IN ATTESA PROSSIMA CARTA" : (isTargetLocked ? "CARTA AGGANCIATA" : "ALLINEA LA CARTA"))
+                Text(isWaitingForNewCard ? "IN ATTESA PROSSIMA CARTA" : (isTargetLocked ? "PREMI CONFERMA" : "ALLINEA LA CARTA"))
                     .font(.system(size: 11, weight: .black, design: .monospaced))
                     .foregroundColor(.white)
                     .tracking(1.2)

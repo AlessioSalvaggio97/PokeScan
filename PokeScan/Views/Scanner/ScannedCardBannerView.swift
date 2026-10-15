@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct ScannedCardBannerView: View {
     public let card: PokemonCard
-    public let countdown: Double
     public let onSelectVariant: (CardVariant) -> Void
     public let onCommit: () -> Void
     public let onDiscard: () -> Void
@@ -20,28 +19,27 @@ public struct ScannedCardBannerView: View {
     
     public var body: some View {
         VStack(spacing: 12) {
-            // Barra di progressione auto-save (3 secondi)
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(Color.white.opacity(0.12))
-                        .frame(height: 5)
-                    
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(
-                            LinearGradient(
-                                colors: [PokeTheme.neonCyan, PokeTheme.neonGreen],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                        .frame(width: max(0, geo.size.width * CGFloat(countdown / 3.0)), height: 5)
-                        .neonGlow(color: PokeTheme.neonGreen, radius: 4)
-                        .animation(.linear(duration: 0.1), value: countdown)
-                }
+            // Intestazione stato carta rilevata (In attesa di conferma)
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(PokeTheme.neonGreen)
+                    .frame(width: 7, height: 7)
+                    .neonGlow(color: PokeTheme.neonGreen, radius: 4)
+                
+                Text("CARTA RILEVATA")
+                    .font(.system(size: 11, weight: .black, design: .monospaced))
+                    .foregroundColor(PokeTheme.neonGreen)
+                    .tracking(1.0)
+                
+                Spacer()
+                
+                Text("SCEGLI VARIANTE & CONFERMA")
+                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .foregroundColor(Color.white.opacity(0.65))
+                    .tracking(0.6)
             }
-            .frame(height: 5)
             .padding(.horizontal, 2)
+            .padding(.top, 2)
             
             HStack(alignment: .top, spacing: 14) {
                 // Miniatura Carta con Bordo e Ombra Olografica
@@ -188,15 +186,26 @@ public struct ScannedCardBannerView: View {
                     }
                 }
                 
-                // Pulsante Salva Subito
+                // Pulsante Conferma Carta
                 Button(action: onCommit) {
-                    Image(systemName: "arrow.down.circle.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.white)
-                        .padding(7)
-                        .background(PokeTheme.neonGreen)
-                        .clipShape(Circle())
-                        .neonGlow(color: PokeTheme.neonGreen, radius: 6)
+                    HStack(spacing: 5) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 14, weight: .bold))
+                        Text("Conferma")
+                            .font(.system(size: 12, weight: .black))
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 9)
+                    .background(
+                        LinearGradient(
+                            colors: [PokeTheme.neonGreen, Color(red: 0.05, green: 0.8, blue: 0.35)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
+                    .neonGlow(color: PokeTheme.neonGreen, radius: 6)
                 }
             }
         }

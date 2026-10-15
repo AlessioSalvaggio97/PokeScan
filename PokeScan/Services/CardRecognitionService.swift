@@ -11,14 +11,12 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
     @Published public var currentCard: PokemonCard?
     @Published public var isAnalyzing = false
     @Published public var lastCommittedCardName: String?
-    @Published public var autoSaveCountdown: Double = 0.0
     @Published public var scanCountThisSession: Int = 0
     @Published public var isWaitingForNewCard = false
     
     private let visionQueue = DispatchQueue(label: "com.pokescan.vision", qos: .userInitiated)
     private var isBusy = false
     private var lastProcessTime: TimeInterval = 0
-    private var autoSaveTimer: AnyCancellable?
     
     // Tracking di stato e blocco anti-duplicati
     private var activeTrackingLocalId: String?
@@ -331,17 +329,21 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         }
         
         // ------------------------------------------------------------------
-        // CASO 2: CARTA GIÀ INQUADRATA SUL BANNER (In-Place Refinement)
+        // CASO 2: CARTA GIÀ INQUADRATA SUL BANNER (In attesa di conferma utente)
         // ------------------------------------------------------------------
-        if let activeId = activeTrackingLocalId, isMatchingLocalId(localId, activeId) {
-            // È LA STESSA CARTA: non duplicare e non risalvare!
-            refineActiveCardIfNeeded(
-                detectedSetId: detectedSetId,
-                detectedPokemonName: detectedPokemonName,
-                totalCards: detectedTotalCards,
-                candidateSetIds: candidateSetIds,
-                language: detectedLanguage
-            )
+        if currentCard != nil {
+            // Se la fotocamera sta ancora inquadrando la carta attiva, perfeziona i dettagli in-place (es. nome/set più nitido)
+            if let activeId = activeTrackingLocalId, isMatchingLocalId(localId, activeId) {
+                refineActiveCardIfNeeded(
+                    detectedSetId: detectedSetId,
+                    detectedPokemonName: detectedPokemonName,
+                    totalCards: detectedTotalCards,
+                    candidateSetIds: candidateSetIds,
+                    language: detectedLanguage
+                )
+            }
+            // Attende la conferma manuale dell'utente (tramite pulsante "Conferma" o "Scarta").
+            // Ignora qualsiasi altra carta nel mirino finché l'utente non conferma o scarta.
             return
         }
         
@@ -450,11 +452,6 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         candidateSetIds: [String] = [],
         language: String
     ) {
-        // Se c'era una carta precedente DIVERSA sul banner, salvala prima di sostituirla
-        if let existing = currentCard, !isMatchingLocalId(existing.localId, localId) {
-            commitCurrentCardIfPresent()
-        }
-        
         lastCommittedLocalId = nil
         lastCommittedSetId = nil
         isWaitingForNewCard = false
@@ -468,7 +465,7 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         let setName = setInfo?.localizedName(language: language) ?? initialSetId.uppercased()
         let symbolData = SetCatalog.shared.getSymbolData(for: initialSetId)
         
-        // Carta temporanea mostrata all'istante
+        // Carta temporanea mostrata all'istante nel banner (attende conferma utente)
         let tempCard = PokemonCard(
             name: initialName,
             localId: localId,
@@ -485,7 +482,6 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         )
         
         self.currentCard = tempCard
-        self.startAutoSaveTimer()
         
         // RISOLUZIONE INTELLIGENTE & DISAMBIGUAZIONE CON TCGDEX
         Task {
@@ -523,6 +519,9 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         lastCommittedCardName = "\(card.name) (\(card.formattedNumber))"
         scanCountThisSession += 1
         
+        let feedback = UINotificationFeedbackGenerator()
+        feedback.notificationOccurred(.success)
+        
         // Blocca la scansione sulla carta appena acquisita finché non viene rimossa o cambiata
         lastCommittedLocalId = card.localId
         lastCommittedSetId = card.setId
@@ -533,7 +532,6 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         isWaitingForNewCard = true
         
         currentCard = nil
-        stopAutoSaveTimer()
     }
     
     public func discardCurrentCard() {
@@ -542,12 +540,14 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
             lastCommittedSetId = card.setId
             isWaitingForNewCard = true
         }
+        let feedback = UIImpactFeedbackGenerator(style: .light)
+        feedback.impactOccurred()
+        
         activeTrackingLocalId = nil
         activeTrackingSetId = nil
         newCardCandidateLocalId = nil
         newCardStabilityCount = 0
         currentCard = nil
-        stopAutoSaveTimer()
     }
     
     public func setVariant(_ variant: CardVariant) {
@@ -557,28 +557,6 @@ public class CardRecognitionService: ObservableObject, CameraFrameDelegate {
         
         let haptic = UISelectionFeedbackGenerator()
         haptic.selectionChanged()
-    }
-    
-    private func startAutoSaveTimer() {
-        stopAutoSaveTimer()
-        autoSaveCountdown = 3.0
-        
-        autoSaveTimer = Timer.publish(every: 0.1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                if self.autoSaveCountdown > 0.1 {
-                    self.autoSaveCountdown -= 0.1
-                } else {
-                    self.commitCurrentCardIfPresent()
-                }
-            }
-    }
-    
-    private func stopAutoSaveTimer() {
-        autoSaveTimer?.cancel()
-        autoSaveTimer = nil
-        autoSaveCountdown = 0.0
     }
     
     /// Pulisce il testo della riga in alto per isolare il solo nome del Pokémon

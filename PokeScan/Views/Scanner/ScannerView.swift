@@ -47,7 +47,6 @@ public struct ScannerView: View {
                 if let card = recognitionService.currentCard {
                     ScannedCardBannerView(
                         card: card,
-                        countdown: recognitionService.autoSaveCountdown,
                         onSelectVariant: { variant in
                             recognitionService.setVariant(variant)
                         },
